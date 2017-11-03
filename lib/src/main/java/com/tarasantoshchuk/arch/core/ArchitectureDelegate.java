@@ -6,9 +6,12 @@ import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
+import com.tarasantoshchuk.arch.core.routing.callback_impl.SafeRouterCallback;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
 import com.tarasantoshchuk.arch.core.view.View;
+
+import javax.inject.Provider;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -23,14 +26,13 @@ public final class ArchitectureDelegate<
         PresenterCallbacks<V, R, I>,
         ViewCallbacks<R>,
         RouterCallbacks<P>,
-        InteractorCallbacks<P>
-{
+        InteractorCallbacks<P>,
+        Provider<CachedActions> {
     private V mView;
     private P mPresenter;
     private I mInteractor;
     private R mRouter;
 
-    private boolean mRouterCallbackAvailable;
     private CachedActions<V> mViewActions = new CachedActions<>();
     private CompositeDisposable mResources = new CompositeDisposable();
 
@@ -58,11 +60,7 @@ public final class ArchitectureDelegate<
     }
 
     public RouterCallback routerImplementation() {
-        if (!mRouterCallbackAvailable) {
-            throw new IllegalStateException();
-        }
-
-        return mView.provideRouterImplementation();
+        return new SafeRouterCallback(mView.provideRouterImplementation(), this);
     }
 
     @SuppressWarnings("unchecked")
@@ -80,8 +78,6 @@ public final class ArchitectureDelegate<
         } else {
             oldDelegate.mView = v;
         }
-
-        holder.get().onCreateView();
     }
 
     public static void onCreateView(View v) {
@@ -96,10 +92,6 @@ public final class ArchitectureDelegate<
         v.architectureHolder().get().onStop();
     }
 
-    public static void onDestroyView(View v) {
-        v.architectureHolder().get().onDestroyView();
-    }
-
 
     @SuppressWarnings("unchecked")
     private void onCreate() {
@@ -108,10 +100,6 @@ public final class ArchitectureDelegate<
         mRouter.onCreate(this);
 
         mView.setCallback(this);
-    }
-
-    private void onCreateView() {
-        mRouterCallbackAvailable = true;
     }
 
     @SuppressWarnings("unchecked")
@@ -124,14 +112,15 @@ public final class ArchitectureDelegate<
         mViewActions.removeReceiver();
     }
 
-    private void onDestroyView() {
-        mRouterCallbackAvailable = false;
-    }
-
     void onDestroy() {
         mPresenter.onDestroy();
         mInteractor.onDestroy();
 
         mResources.dispose();
+    }
+
+    @Override
+    public CachedActions<? extends View> get() {
+        return mViewActions;
     }
 }

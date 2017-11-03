@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.tarasantoshchuk.arch.core.ArchitectureDelegate;
 import com.tarasantoshchuk.arch.core.ArchitectureDelegateHolder;
@@ -16,7 +17,6 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
-import com.tarasantoshchuk.arch.core.routing.callback_impl.ActivityRouterCallback;
 import com.tarasantoshchuk.arch.core.view.View;
 
 
@@ -43,6 +43,8 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements View<
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.e("Activity", "onCreate");
+
         ArchitectureDelegate.onCreateView(this);
     }
 
@@ -58,13 +60,6 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements View<
         super.onStop();
 
         ArchitectureDelegate.onStop(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        ArchitectureDelegate.onDestroyView(this);
     }
 
     /* router implementation provider */
@@ -84,7 +79,7 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements View<
                 .onScreenResult(
                         Activity.RESULT_OK == resultCode,
                         ScreensResolver.screen(requestCode),
-                        BundleConverter.fromAndroidBundle(data.getExtras())
+                        BundleConverter.fromIntent(data)
                 );
     }
 }

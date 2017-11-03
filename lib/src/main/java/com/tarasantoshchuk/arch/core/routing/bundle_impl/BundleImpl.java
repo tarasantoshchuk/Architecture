@@ -50,6 +50,7 @@ public final class BundleImpl extends BaseBundle {
         return mInnerBundle.getSerializable(key);
     }
 
+    @Override
     public android.os.Bundle toAndroidBundle() {
         return mInnerBundle;
     }

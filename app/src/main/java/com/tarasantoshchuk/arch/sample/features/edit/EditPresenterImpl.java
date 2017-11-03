@@ -7,7 +7,7 @@ import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditInteractor;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditPresenter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditRouter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
-import com.tarasantoshchuk.arch.sample.utils.Null;
+import com.tarasantoshchuk.arch.util.Null;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
 
 import io.reactivex.SingleObserver;

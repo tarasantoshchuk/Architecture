@@ -6,7 +6,7 @@ import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.sample.core.routing.Screens;
-import com.tarasantoshchuk.arch.sample.utils.Null;
+import com.tarasantoshchuk.arch.util.Null;
 
 import io.reactivex.Observable;
 

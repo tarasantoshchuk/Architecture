@@ -4,10 +4,9 @@ package com.tarasantoshchuk.arch.sample.features.edit;
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
-import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
-import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
 import com.tarasantoshchuk.arch.core.view.View;
-import com.tarasantoshchuk.arch.sample.utils.Null;
+import com.tarasantoshchuk.arch.sample.core.routing.Screens;
+import com.tarasantoshchuk.arch.util.Null;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -29,6 +28,6 @@ interface Contract {
         Single<Null> saveText(String value);
     }
 
-    interface EditRouter extends Router<EditPresenter, Screen> {
+    interface EditRouter extends Router<EditPresenter, Screens> {
     }
 }

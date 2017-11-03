@@ -66,12 +66,6 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
         ArchitectureDelegate.onStop(this);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ArchitectureDelegate.onDestroyView(this);
-    }
-
     /* router */
 
     @Override
@@ -89,7 +83,7 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
                 .onScreenResult(
                         resultCode == Activity.RESULT_OK,
                         ScreensResolver.screen(resultCode),
-                        BundleConverter.fromAndroidBundle(data.getExtras())
+                        BundleConverter.fromIntent(data)
                 );
     }
 }
