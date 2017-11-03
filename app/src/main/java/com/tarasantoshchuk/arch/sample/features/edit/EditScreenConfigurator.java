@@ -1,13 +1,17 @@
 package com.tarasantoshchuk.arch.sample.features.edit;
 
 
-import com.tarasantoshchuk.arch.core.di.ScreenConfigurator;
+import com.tarasantoshchuk.arch.core.di.BaseScreenConfigurator;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditInteractor;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditPresenter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditRouter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
 
-public class EditScreenConfigurator implements ScreenConfigurator<EditView,EditPresenter,EditInteractor,EditRouter> {
+class EditScreenConfigurator extends BaseScreenConfigurator<EditView,EditPresenter,EditInteractor,EditRouter> {
+    EditScreenConfigurator(EditView view) {
+        super(view);
+    }
+
     @Override
     public EditPresenter presenter() {
         return new EditPresenterImpl();
@@ -15,16 +19,11 @@ public class EditScreenConfigurator implements ScreenConfigurator<EditView,EditP
 
     @Override
     public EditInteractor interactor() {
-        return null;
+        return new EditInteractorImpl();
     }
 
     @Override
     public EditRouter router() {
-        return null;
-    }
-
-    @Override
-    public EditView view() {
-        return null;
+        return new EditRouterImpl();
     }
 }

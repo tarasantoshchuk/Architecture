@@ -11,7 +11,7 @@ import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainPresenter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
-import com.tarasantoshchuk.arch.sample.utils.Null;
+import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

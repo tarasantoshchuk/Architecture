@@ -1,11 +1,12 @@
 package com.tarasantoshchuk.arch.sample.core.routing;
 
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
+import com.tarasantoshchuk.arch.sample.features.edit.EditActivity;
 import com.tarasantoshchuk.arch.sample.features.main.MainActivity;
 
 public enum Screens implements Screen {
     MAIN(MainActivity.class),
-    EDIT(null),
+    EDIT(EditActivity.class),
     TOASTER(null);
 
     Class<?> mScreenClass;

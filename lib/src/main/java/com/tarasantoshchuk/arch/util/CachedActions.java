@@ -23,21 +23,18 @@ public class CachedActions<T> {
     /**
      * applies action on receiver, either now or when receiver arrives
      * @param action - action that will be applied on receiver
-     * @return true - instant execution
      */
-    public boolean submit(Action<T> action) {
+    public void submit(Action<T> action) {
         if (mReceiver != null) {
             action.apply(mReceiver);
-            return true;
         }
 
         mActions.add(action);
-        return false;
     }
 
     private void applyPendingActions() {
-        do {
+        while(!mActions.isEmpty() && mReceiver != null) {
             mActions.poll().apply(mReceiver);
-        } while(!mActions.isEmpty() && mReceiver != null);
+        }
     }
 }

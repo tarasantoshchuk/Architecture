@@ -46,7 +46,7 @@ public final class EmptyBundle extends BaseBundle {
     }
 
     @Override
-    Bundle toAndroidBundle() {
+    public Bundle toAndroidBundle() {
         return Bundle.EMPTY;
     }
 }
