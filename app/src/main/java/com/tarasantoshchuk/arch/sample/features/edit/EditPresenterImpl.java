@@ -1,77 +1,73 @@
 package com.tarasantoshchuk.arch.sample.features.edit;
 
 
-import com.tarasantoshchuk.arch.core.PresenterCallbacks;
 import com.tarasantoshchuk.arch.core.presenter.impl.BasePresenter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditInteractor;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditPresenter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditRouter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
-import com.tarasantoshchuk.arch.util.Null;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
-public class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteractor> implements EditPresenter {
+class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteractor> implements EditPresenter {
     private BehaviorSubject<String> mSavedText = BehaviorSubject.create();
+    private BehaviorSubject<Boolean> mUiEnabled = BehaviorSubject.createDefault(false);
+
+    @Override
+    public void onCreate() {
+        interactor()
+                .getSavedText()
+                .subscribe(new SimpleObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        super.onNext(s);
+                        mSavedText.onNext(s);
+                        mUiEnabled.onNext(true);
+                    }
+                });
+
+    }
 
     @Override
     public void onViewAttached(EditView view) {
-        view
-                .saveClicks()
-                .subscribe(new SimpleObserver<Null>() {
-                    @Override
-                    public void onNext(Null aNull) {
-                        interactor()
-                                .saveText(mSavedText.getValue())
-                                .subscribe(new SingleObserver<Null>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
+        super.onViewAttached(view);
 
-                                    }
+        observeView(
+                view.saveClicks(),
+                this::saveText
+        );
 
-                                    @Override
-                                    public void onSuccess(Null aNull) {
-                                        router().finish();
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-                                });
-                    }
-                });
-
-        view
-                .textChanged()
-                .subscribe(new SimpleObserver<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        if (s.equals(mSavedText.getValue())) {
-                            return;
-                        }
-
-                        mSavedText.onNext(s);
-                    }
-                });
+        observeView(
+                view.textChanged(),
+                this::updateText
+        );
     }
 
     @Override
-    public void onCreate(PresenterCallbacks<EditView, EditRouter, EditInteractor> callbacks) {
-        mSavedText
-                .subscribe(new SimpleObserver<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        applyOnView(view -> view.setText(s));
-                    }
-                });
+    public Observable<String> textLoaded() {
+        return mSavedText;
     }
 
     @Override
-    public void onDestroy() {
+    public Observable<Boolean> uiEnabled() {
+        return mUiEnabled;
+    }
 
+    private void updateText(String text) {
+        if (text.equals(mSavedText.getValue())) {
+            return;
+        }
+
+        mSavedText.onNext(text);
+    }
+
+    private void saveText() {
+        interactor()
+                .saveText(mSavedText.getValue())
+                .subscribe(
+                        __ -> router().finish()
+                );
     }
 }

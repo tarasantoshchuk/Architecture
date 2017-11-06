@@ -18,6 +18,11 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.util.Action;
+import com.tarasantoshchuk.arch.util.Logger;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 
 
 public abstract class BaseActivity<P> extends AppCompatActivity implements View<P>, RouterCallbackProvider {
@@ -34,7 +39,13 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements View<
 
     @Override
     public final void setCallback(ViewCallbacks<? extends Router> callbacks) {
+        Logger.v(this, "setCallback");
+
         mViewCallbacks = callbacks;
+    }
+
+    private <T> Observer<T> stateObserver(Action<T> onNext) {
+        return mViewCallbacks.stateObserver(onNext);
     }
 
     /* delegation to architecture delegate */
@@ -80,6 +91,15 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements View<
                         Activity.RESULT_OK == resultCode,
                         ScreensResolver.screen(requestCode),
                         BundleConverter.fromIntent(data)
+                );
+    }
+
+    /* helper methods */
+
+    protected final <T> void observeState(Observable<T> observable, Action<T> observer) {
+        observable
+                .subscribe(
+                        stateObserver(observer)
                 );
     }
 }

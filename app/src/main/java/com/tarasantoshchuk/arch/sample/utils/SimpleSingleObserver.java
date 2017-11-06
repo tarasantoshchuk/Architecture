@@ -5,10 +5,10 @@ import android.support.annotation.CallSuper;
 
 import com.tarasantoshchuk.arch.util.Logger;
 
-import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
-public class SimpleObserver<T> implements Observer<T> {
+public class SimpleSingleObserver<T> implements SingleObserver<T> {
     @Override
     @CallSuper
     public void onSubscribe(Disposable d) {
@@ -17,19 +17,13 @@ public class SimpleObserver<T> implements Observer<T> {
 
     @Override
     @CallSuper
-    public void onNext(T t) {
-        Logger.v(this, "onNext, value " + t);
+    public void onSuccess(T t) {
+        Logger.v(this, "onSuccess, value " + t);
     }
 
     @Override
     @CallSuper
     public void onError(Throwable e) {
         Logger.e(this, "onError", e);
-    }
-
-    @Override
-    @CallSuper
-    public void onComplete() {
-        Logger.v(this, "onComplete");
     }
 }

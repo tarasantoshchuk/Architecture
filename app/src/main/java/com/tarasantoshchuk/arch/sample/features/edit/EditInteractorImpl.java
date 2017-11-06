@@ -15,12 +15,12 @@ public class EditInteractorImpl extends BaseInteractor<EditPresenter> implements
 
     @Override
     public Observable<String> getSavedText() {
-        return mTextRepository.get();
+        return mTextRepository.getOnMainThread();
     }
 
     @Override
     public Single<Null> saveText(String value) {
         return mTextRepository
-                .set(value);
+                .setOnMainThread(value);
     }
 }

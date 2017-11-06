@@ -1,9 +1,25 @@
 package com.tarasantoshchuk.arch.core.routing;
 
+import android.support.annotation.CallSuper;
+
+import com.tarasantoshchuk.arch.util.Logger;
+
 public interface RouterCallback {
-    void startScreen(ScreensResolver.Screen screen, Bundle extras);
-    void cancel(Bundle extras);
-    void success(Bundle extras);
+    @CallSuper
+    default void startScreen(ScreensResolver.Screen screen, Bundle extras) {
+        Logger.v(this, "startScreen " + screen);
+    }
+
+    @CallSuper
+    default void cancel(Bundle extras) {
+        Logger.v(this, "cancel");
+    }
+
+    @CallSuper
+    default void success(Bundle extras) {
+        Logger.v(this, "success");
+    }
+
     Bundle startData();
 
     default void cancel() {
