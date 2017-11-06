@@ -14,6 +14,7 @@ import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
 import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.reactivex.Observable;
@@ -33,6 +34,7 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_activity);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -41,8 +43,18 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     }
 
     @Override
-    public void setText(String text) {
-        mEditText.setText(text);
+    public void onAttachToPresenter(EditPresenter presenter) {
+        super.onAttachToPresenter(presenter);
+
+        observeState(
+                presenter.textLoaded(),
+                this::setText
+        );
+
+        observeState(
+                presenter.uiEnabled(),
+                this::enableUi
+        );
     }
 
     @Override
@@ -63,5 +75,14 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     @OnTextChanged(R.id.edit_text)
     public void onTextChanged(CharSequence text) {
         mTextChanges.onNext(text.toString());
+    }
+
+    private void setText(String text) {
+        mEditText.setText(text);
+    }
+
+    private void enableUi(Boolean isEnabled) {
+        mEditText.setEnabled(isEnabled);
+        mSaveButton.setEnabled(isEnabled);
     }
 }

@@ -13,11 +13,11 @@ import io.reactivex.Observable;
 interface Contract {
     interface MainView extends View<MainPresenter> {
         Observable<Null> editClicks();
-        void setText(String text);
-        void enableEdit(boolean isLocked);
     }
 
     interface MainPresenter extends Presenter<MainView, MainRouter, MainInteractor> {
+        Observable<String> text();
+        Observable<Boolean> editEnabled();
     }
 
     interface MainInteractor extends Interactor<MainPresenter> {

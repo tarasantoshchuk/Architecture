@@ -25,16 +25,27 @@ public class CachedActions<T> {
      * @param action - action that will be applied on receiver
      */
     public void submit(Action<T> action) {
+        Logger.v(this, ">> submit");
+        
         if (mReceiver != null) {
+            Logger.v(this, "submit, executing");
             action.apply(mReceiver);
+        } else {
+            Logger.v(this, "submit, cached");
+            mActions.add(action);
         }
 
-        mActions.add(action);
+        Logger.v(this, "<< submit");
     }
 
     private void applyPendingActions() {
+        Logger.v(this, ">> applyPendingActions, size " + mActions.size());
+
         while(!mActions.isEmpty() && mReceiver != null) {
+            Logger.v(this, "applyPendingActions, executing");
             mActions.poll().apply(mReceiver);
         }
+
+        Logger.v(this, "<< applyPendingActions, size " + mActions.size());
     }
 }

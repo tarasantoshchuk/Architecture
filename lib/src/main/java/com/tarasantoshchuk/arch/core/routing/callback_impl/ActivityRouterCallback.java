@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
-import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
+import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
 
 import static com.tarasantoshchuk.arch.core.routing.BundleConverter.fromIntent;
 import static com.tarasantoshchuk.arch.core.routing.Routers.intentFromBundle;
@@ -21,19 +21,26 @@ public class ActivityRouterCallback implements RouterCallback {
     }
 
     @Override
-    public void startScreen(ScreensResolver.Screen screen, Bundle bundle) {
+    public final void startScreen(Screen screen, Bundle bundle) {
+        RouterCallback.super.startScreen(screen, bundle);
         Intent intent = intentWithBundle(mActivity, screen, bundle);
+        launchActivity(screen, intent);
+    }
+
+    protected void launchActivity(Screen screen, Intent intent) {
         mActivity.startActivityForResult(intent, requestCode(screen));
     }
 
     @Override
-    public void cancel(Bundle bundle) {
+    public final void cancel(Bundle bundle) {
+        RouterCallback.super.cancel(bundle);
         mActivity.setResult(Activity.RESULT_CANCELED, intentFromBundle(bundle));
         mActivity.finish();
     }
 
     @Override
-    public void success(Bundle bundle) {
+    public final void success(Bundle bundle) {
+        RouterCallback.super.success(bundle);
         mActivity.setResult(Activity.RESULT_OK, intentFromBundle(bundle));
         mActivity.finish();
     }

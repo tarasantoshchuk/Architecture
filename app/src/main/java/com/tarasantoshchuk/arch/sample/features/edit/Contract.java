@@ -13,14 +13,13 @@ import io.reactivex.Single;
 
 interface Contract {
     interface EditView extends View<EditPresenter> {
-        void setText(String text);
-
         Observable<Null> saveClicks();
         Observable<String> textChanged();
     }
 
     interface EditPresenter extends Presenter<EditView, EditRouter, EditInteractor> {
-
+        Observable<String> textLoaded();
+        Observable<Boolean> uiEnabled();
     }
 
     interface EditInteractor extends Interactor<EditPresenter> {

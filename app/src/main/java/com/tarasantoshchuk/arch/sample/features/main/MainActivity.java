@@ -11,6 +11,7 @@ import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainPresenter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
+import com.tarasantoshchuk.arch.util.Logger;
 import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;
@@ -38,6 +39,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 
     @OnClick(R.id.btn_edit)
     void onEditClick() {
+        Logger.v(this, "onEditClick");
+
         mEditClicks.onNext(Null.INSTANCE);
     }
 
@@ -46,18 +49,35 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
         return mEditClicks;
     }
 
-    @Override
-    public void setText(String text) {
+    private void setText(String text) {
+        Logger.v(this, "setText, text " + text);
+
         mSavedText.setText(text);
     }
 
-    @Override
-    public void enableEdit(boolean isLocked) {
-        mEdit.setEnabled(!isLocked);
+    private void enableEdit(boolean isEnabled) {
+        Logger.v(this, "enableEdit, isLocked " + isEnabled);
+
+        mEdit.setEnabled(isEnabled);
     }
 
     @Override
     public ScreenConfigurator screenConfigurator() {
         return new MainScreenConfigurator(this);
+    }
+
+    @Override
+    public void onAttachToPresenter(MainPresenter presenter) {
+        super.onAttachToPresenter(presenter);
+
+        observeState(
+                presenter.editEnabled(),
+                this::enableEdit
+        );
+
+        observeState(
+                presenter.text(),
+                this::setText
+        );
     }
 }
