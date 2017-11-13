@@ -64,10 +64,8 @@ class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteract
     }
 
     private void saveText() {
-        interactor()
-                .saveText(mSavedText.getValue())
-                .subscribe(
-                        __ -> router().finish()
-                );
+        observeModel(
+                interactor().saveText(mSavedText.getValue()),
+                () -> router().finish());
     }
 }

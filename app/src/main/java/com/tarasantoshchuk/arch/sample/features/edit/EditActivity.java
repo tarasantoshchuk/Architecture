@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 
-import com.tarasantoshchuk.arch.core.di.ScreenConfigurator;
+import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditPresenter;
@@ -38,7 +38,7 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     }
 
     @Override
-    public ScreenConfigurator screenConfigurator() {
+    public RootScreenConfigurator screenConfigurator() {
         return new EditScreenConfigurator(this);
     }
 
@@ -78,6 +78,10 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     }
 
     private void setText(String text) {
+        if (text.equals(mEditText.getText().toString())) {
+            return;
+        }
+
         mEditText.setText(text);
     }
 

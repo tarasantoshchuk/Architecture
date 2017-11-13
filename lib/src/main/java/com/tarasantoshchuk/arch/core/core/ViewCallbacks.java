@@ -1,4 +1,4 @@
-package com.tarasantoshchuk.arch.core;
+package com.tarasantoshchuk.arch.core.core;
 
 
 import com.tarasantoshchuk.arch.util.Action;

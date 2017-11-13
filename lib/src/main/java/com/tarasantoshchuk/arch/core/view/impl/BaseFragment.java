@@ -10,9 +10,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.tarasantoshchuk.arch.core.ArchitectureDelegate;
-import com.tarasantoshchuk.arch.core.ArchitectureDelegateHolder;
-import com.tarasantoshchuk.arch.core.ViewCallbacks;
+import com.tarasantoshchuk.arch.core.core.ArchitectureDelegateHolder;
+import com.tarasantoshchuk.arch.core.core.RootArchitectureDelegate;
+import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.BundleConverter;
 import com.tarasantoshchuk.arch.core.routing.Router;
@@ -26,10 +26,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 public abstract class BaseFragment<P extends Presenter> extends Fragment implements View<P>, RouterCallbackProvider {
-    /* view implementation */
+    /* views implementation */
 
     @Inject
-    Provider<ArchitectureDelegate> mArchitectureProvider;
+    Provider<RootArchitectureDelegate> mArchitectureProvider;
 
     private ViewCallbacks<? extends Router> mViewCallbacks;
 
@@ -50,20 +50,20 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
     @Nullable
     @Override
     public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ArchitectureDelegate.onCreateView(this);
+        RootArchitectureDelegate.onCreateView(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        ArchitectureDelegate.onStart(this);
+        RootArchitectureDelegate.onStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ArchitectureDelegate.onStop(this);
+        RootArchitectureDelegate.onStop(this);
     }
 
     /* router */

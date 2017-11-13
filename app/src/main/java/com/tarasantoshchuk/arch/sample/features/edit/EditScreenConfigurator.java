@@ -1,13 +1,13 @@
 package com.tarasantoshchuk.arch.sample.features.edit;
 
 
-import com.tarasantoshchuk.arch.core.di.BaseScreenConfigurator;
+import com.tarasantoshchuk.arch.core.di.BaseRootScreenConfigurator;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditInteractor;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditPresenter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditRouter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
 
-class EditScreenConfigurator extends BaseScreenConfigurator<EditView,EditPresenter,EditInteractor,EditRouter> {
+class EditScreenConfigurator extends BaseRootScreenConfigurator<EditView, EditPresenter,EditInteractor,EditRouter> {
     EditScreenConfigurator(EditView view) {
         super(view);
     }

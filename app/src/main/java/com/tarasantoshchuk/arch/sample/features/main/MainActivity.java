@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.tarasantoshchuk.arch.core.di.ScreenConfigurator;
+import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainPresenter;
@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
     }
 
     @Override
-    public ScreenConfigurator screenConfigurator() {
+    public RootScreenConfigurator screenConfigurator() {
         return new MainScreenConfigurator(this);
     }
 

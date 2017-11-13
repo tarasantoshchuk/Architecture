@@ -4,7 +4,7 @@ package com.tarasantoshchuk.arch.core.routing.router_impl;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
-import com.tarasantoshchuk.arch.core.RouterCallbacks;
+import com.tarasantoshchuk.arch.core.core.RouterCallbacks;
 import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
