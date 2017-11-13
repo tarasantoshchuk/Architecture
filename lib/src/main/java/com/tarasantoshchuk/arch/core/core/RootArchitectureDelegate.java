@@ -1,6 +1,8 @@
 package com.tarasantoshchuk.arch.core.core;
 
 
+import android.support.annotation.NonNull;
+
 import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
@@ -58,8 +60,14 @@ public final class RootArchitectureDelegate<
         subDelegate(view).replaceView(view);
     }
 
+    @NonNull
     private ArchitectureDelegate subDelegate(View view) {
-        return mSubDelegates.get(view.tag());
+        String viewKey = view.tag();
+        if (!mSubDelegates.containsKey(viewKey)) {
+
+        }
+
+        return mSubDelegates.get(viewKey);
     }
 
     @Override
