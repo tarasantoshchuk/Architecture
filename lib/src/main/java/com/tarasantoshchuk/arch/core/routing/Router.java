@@ -3,7 +3,7 @@ package com.tarasantoshchuk.arch.core.routing;
 
 import android.support.annotation.NonNull;
 
-import com.tarasantoshchuk.arch.core.RouterCallbacks;
+import com.tarasantoshchuk.arch.core.core.RouterCallbacks;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
 
 public interface Router<P, S extends Screen> {

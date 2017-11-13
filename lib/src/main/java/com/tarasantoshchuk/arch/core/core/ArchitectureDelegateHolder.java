@@ -1,16 +1,16 @@
-package com.tarasantoshchuk.arch.core;
+package com.tarasantoshchuk.arch.core.core;
 
 
 import android.arch.lifecycle.ViewModel;
 
 public final class ArchitectureDelegateHolder extends ViewModel {
-    private ArchitectureDelegate mArchitectureDelegate;
+    private RootArchitectureDelegate mArchitectureDelegate;
 
-    ArchitectureDelegate get() {
+    RootArchitectureDelegate get() {
         return mArchitectureDelegate;
     }
 
-    void set(ArchitectureDelegate delegate) {
+    void set(RootArchitectureDelegate delegate) {
         mArchitectureDelegate = delegate;
     }
 

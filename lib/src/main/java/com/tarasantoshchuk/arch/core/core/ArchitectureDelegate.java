@@ -1,4 +1,4 @@
-package com.tarasantoshchuk.arch.core;
+package com.tarasantoshchuk.arch.core.core;
 
 
 import android.support.annotation.CallSuper;
@@ -8,7 +8,6 @@ import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
-import com.tarasantoshchuk.arch.core.routing.callback_impl.SafeRouterCallback;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
@@ -17,35 +16,37 @@ import com.tarasantoshchuk.arch.util.Logger;
 import javax.inject.Provider;
 
 import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public final class ArchitectureDelegate<
+public class ArchitectureDelegate<
         V extends View,
         P extends Presenter,
         I extends Interactor,
         R extends Router>
 
-    implements
+        implements
 
         PresenterCallbacks<V, R, I>,
         ViewCallbacks<R>,
         RouterCallbacks<P>,
-        InteractorCallbacks<P>,
         Provider<CachedActions> {
+    private RootArchitectureDelegate<?, P, I, R> mParent;
 
-    private V mView;
-    private P mPresenter;
-    private I mInteractor;
-    private R mRouter;
+    protected V mView;
+    protected P mPresenter;
+    protected R mRouter;
 
     private CachedActions<V> mViewActions = new CachedActions<>();
-    private CompositeDisposable mResources = new CompositeDisposable();
+    private CompositeDisposable mUnsubscribeOnStopSubscriptions = new CompositeDisposable();
+    private CompositeDisposable mUnsubscribeOnDestroySubscriptions = new CompositeDisposable();
 
-    private ArchitectureDelegate(ScreenConfigurator<V, P, I, R> configurator) {
+    ArchitectureDelegate(RootArchitectureDelegate<?, P, I, R> parent, ScreenConfigurator<V, P, R> configurator) {
+        mParent = parent;
+
         mView = configurator.view();
         mPresenter = configurator.presenter();
-        mInteractor = configurator.interactor();
         mRouter = configurator.router();
     }
 
@@ -53,68 +54,37 @@ public final class ArchitectureDelegate<
         return mPresenter;
     }
 
-    public I interactor() {
-        return mInteractor;
-    }
-
     public R router() {
         return mRouter;
     }
 
+    @Override
+    public I interactor() {
+        return mParent.interactor();
+    }
+
+    @Override
     public RouterCallback routerImplementation() {
-        Logger.v(this, "routerImplementation");
-
-        return new SafeRouterCallback(mView.provideRouterImplementation(), this);
+        return mParent.routerImplementation();
     }
 
-    @SuppressWarnings("unchecked")
-    private static void dispatchOnCreate(View v) {
-        ArchitectureDelegateHolder holder = v.architectureHolder();
-
-        ArchitectureDelegate oldDelegate = holder.get();
-
-
-        if (oldDelegate == null) {
-            ArchitectureDelegate newDelegate = new ArchitectureDelegate(v.screenConfigurator());
-
-            holder.set(newDelegate);
-            newDelegate.onCreate();
-        } else {
-            oldDelegate.replaceView(v);
-        }
-    }
-
-    private void replaceView(V v) {
+    void replaceView(V v) {
         mView = v;
         mView.setCallback(this);
     }
 
-    public static void onCreateView(View v) {
-        dispatchOnCreate(v);
-    }
-
-    public static void onStart(View v) {
-        v.architectureHolder().get().onStart();
-    }
-
-    public static void onStop(View v) {
-        v.architectureHolder().get().onStop();
-    }
-
-
     @SuppressWarnings("unchecked")
-    private void onCreate() {
+    void onCreate() {
         Logger.v(this, "onCreate");
 
         mPresenter.onCreate(this);
-        mInteractor.onCreate(this);
         mRouter.onCreate(this);
 
         mView.setCallback(this);
     }
 
     @SuppressWarnings("unchecked")
-    private void onStart() {
+    void onStart() {
         Logger.v(this, "onStart");
 
         mPresenter.onViewAttached(mView);
@@ -123,21 +93,21 @@ public final class ArchitectureDelegate<
         mViewActions.setReceiver(mView);
     }
 
-    private void onStop() {
+    void onStop() {
         Logger.v(this, "onStop");
 
         mViewActions.removeReceiver();
 
-        Logger.v(this, "onStop, mResources.size() " + mResources.size());
+        Logger.v(this, "onStop, mUnsubscribeOnStopSubscriptions.size() " + mUnsubscribeOnStopSubscriptions.size());
 
-        mResources.clear();
+        mUnsubscribeOnStopSubscriptions.clear();
     }
 
     void onDestroy() {
         Logger.v(this, "onStop");
+        mUnsubscribeOnDestroySubscriptions.clear();
 
         mPresenter.onDestroy();
-        mInteractor.onDestroy();
     }
 
     @Override
@@ -147,26 +117,39 @@ public final class ArchitectureDelegate<
 
     @Override
     public <T> Observer<T> viewObserver(Action<T> onNext) {
-        return new UnsubscribeOnStopObserver<>(onNext);
+        return new AutoUnsubscribeObserver<>(onNext, mUnsubscribeOnStopSubscriptions);
+    }
+
+    @Override
+    public <T> SingleObserver<T> modelObserver(Action<T> onNext) {
+        return new AutoUnsubscribeObserver<>(onNext, mUnsubscribeOnDestroySubscriptions);
     }
 
     @Override
     public <T> Observer<T> stateObserver(Action<T> onNext) {
-        return new UnsubscribeOnStopObserver<>(onNext);
+        return new AutoUnsubscribeObserver<>(onNext, mUnsubscribeOnStopSubscriptions);
     }
 
-    final class UnsubscribeOnStopObserver<T> implements Observer<T> {
+    final class AutoUnsubscribeObserver<T> implements Observer<T>, SingleObserver<T> {
         private final Action<T> mOnNext;
+        private final CompositeDisposable mDisposablesCollector;
 
-        UnsubscribeOnStopObserver(Action<T> onNext) {
+        AutoUnsubscribeObserver(Action<T> onNext, CompositeDisposable disposablesCollector) {
             mOnNext = onNext;
+            mDisposablesCollector = disposablesCollector;
         }
 
         @Override
         @CallSuper
         public void onSubscribe(Disposable d) {
             Logger.v(this, "onSubscribe");
-            mResources.add(d);
+            mDisposablesCollector.add(d);
+        }
+
+        @Override
+        public void onSuccess(T t) {
+            Logger.v(this, "onSuccess, value " + t);
+            mOnNext.apply(t);
         }
 
         @Override
