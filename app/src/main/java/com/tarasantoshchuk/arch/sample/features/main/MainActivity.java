@@ -3,6 +3,7 @@ package com.tarasantoshchuk.arch.sample.features.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -27,7 +28,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
     @BindView(R.id.btn_edit)
     Button mEdit;
 
+    @BindView(R.id.btn_screen_with_subview)
+    View mSubviewScreen;
+
     PublishSubject<Null> mEditClicks = PublishSubject.create();
+    PublishSubject<Null> mOpenOtherClicks = PublishSubject.create();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,9 +49,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
         mEditClicks.onNext(Null.INSTANCE);
     }
 
+    @OnClick(R.id.btn_screen_with_subview)
+    void onOpenOtherClick() {
+        Logger.v(this, "onOpenOtherClick");
+
+        mOpenOtherClicks.onNext(Null.INSTANCE);
+    }
+
     @Override
     public Observable<Null> editClicks() {
         return mEditClicks;
+    }
+
+    @Override
+    public Observable<Null> openOtherClicks() {
+        return mOpenOtherClicks;
     }
 
     private void setText(String text) {

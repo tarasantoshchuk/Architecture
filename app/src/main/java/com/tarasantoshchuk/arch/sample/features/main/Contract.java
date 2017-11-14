@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 interface Contract {
     interface MainView extends RootView<MainView.MainPresenter> {
         Observable<Null> editClicks();
+        Observable<Null> openOtherClicks();
 
         interface MainPresenter extends Presenter<MainView, MainRouter, MainInteractor> {
             Observable<String> text();
@@ -26,5 +27,6 @@ interface Contract {
 
     interface MainRouter extends Router<MainView.MainPresenter, Screens> {
         void openEditScreen();
+        void openScreenWithFragment();
     }
 }

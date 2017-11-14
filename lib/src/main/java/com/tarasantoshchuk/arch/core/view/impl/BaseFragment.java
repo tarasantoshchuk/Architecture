@@ -16,7 +16,6 @@ import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.BundleConverter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
-import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
@@ -25,7 +24,7 @@ import com.tarasantoshchuk.arch.core.view.View;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-public abstract class BaseFragment<P extends Presenter> extends Fragment implements View<P>, RouterCallbackProvider {
+public abstract class BaseFragment<P extends Presenter> extends Fragment implements View<P> {
     /* views implementation */
 
     @Inject

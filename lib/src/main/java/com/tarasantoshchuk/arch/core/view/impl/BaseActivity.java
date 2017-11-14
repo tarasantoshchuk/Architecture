@@ -14,7 +14,6 @@ import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.routing.BundleConverter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
-import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
@@ -25,7 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 
 
-public abstract class BaseActivity<P> extends AppCompatActivity implements RootView<P>, RouterCallbackProvider {
+public abstract class BaseActivity<P> extends AppCompatActivity implements RootView<P> {
     /* views implementation */
 
     ViewCallbacks<? extends Router> mViewCallbacks;
