@@ -12,14 +12,14 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 
 interface Contract {
-    interface EditView extends RootView<EditPresenter> {
+    interface EditView extends RootView<EditView.EditPresenter> {
         Observable<Null> saveClicks();
         Observable<String> textChanged();
-    }
 
-    interface EditPresenter extends Presenter<EditView, EditRouter, EditInteractor> {
-        Observable<String> textLoaded();
-        Observable<Boolean> uiEnabled();
+        interface EditPresenter extends Presenter<EditView, EditRouter, EditInteractor> {
+            Observable<String> textLoaded();
+            Observable<Boolean> uiEnabled();
+        }
     }
 
     interface EditInteractor extends Interactor {
@@ -27,6 +27,6 @@ interface Contract {
         Single<Null> saveText(String value);
     }
 
-    interface EditRouter extends Router<EditPresenter, Screens> {
+    interface EditRouter extends Router<EditView.EditPresenter, Screens> {
     }
 }

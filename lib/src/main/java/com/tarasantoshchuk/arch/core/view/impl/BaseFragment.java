@@ -2,7 +2,6 @@ package com.tarasantoshchuk.arch.core.view.impl;
 
 
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.tarasantoshchuk.arch.core.core.ArchitectureDelegateHolder;
+import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
 import com.tarasantoshchuk.arch.core.core.RootArchitectureDelegate;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
@@ -20,6 +19,7 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
+import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
 
 import javax.inject.Inject;
@@ -34,13 +34,6 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
     private ViewCallbacks<? extends Router> mViewCallbacks;
 
     @Override
-    public final ArchitectureDelegateHolder architectureHolder() {
-        return ViewModelProviders
-                .of(this)
-                .get(ArchitectureDelegateHolder.class);
-    }
-
-    @Override
     public final void setCallback(ViewCallbacks<? extends Router> callbacks) {
         mViewCallbacks = callbacks;
     }
@@ -50,20 +43,20 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
     @Nullable
     @Override
     public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        RootArchitectureDelegate.onCreateView(this);
+        ArchitectureDelegates.onCreateView(getRootView(), this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        RootArchitectureDelegate.onStart(this);
+        ArchitectureDelegates.onStart(getRootView(), this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        RootArchitectureDelegate.onStop(this);
+        ArchitectureDelegates.onStop(getRootView(), this);
     }
 
     /* router */
@@ -85,5 +78,9 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
                         ScreensResolver.screen(resultCode),
                         BundleConverter.fromIntent(data)
                 );
+    }
+
+    public RootView getRootView() {
+        return (RootView) getActivity();
     }
 }

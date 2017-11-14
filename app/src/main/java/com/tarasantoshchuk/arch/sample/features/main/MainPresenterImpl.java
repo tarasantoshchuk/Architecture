@@ -3,9 +3,9 @@ package com.tarasantoshchuk.arch.sample.features.main;
 
 import com.tarasantoshchuk.arch.core.presenter.impl.BasePresenter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainInteractor;
-import com.tarasantoshchuk.arch.sample.features.main.Contract.MainPresenter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainRouter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
+import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView.MainPresenter;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
 import com.tarasantoshchuk.arch.util.Logger;
 
