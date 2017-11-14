@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
-import com.tarasantoshchuk.arch.sample.features.main.Contract.MainPresenter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
+import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView.MainPresenter;
 import com.tarasantoshchuk.arch.util.Logger;
 import com.tarasantoshchuk.arch.util.Null;
 

@@ -9,8 +9,8 @@ import android.widget.EditText;
 import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
-import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditPresenter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
+import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView.EditPresenter;
 import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;

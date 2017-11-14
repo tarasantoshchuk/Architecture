@@ -55,16 +55,18 @@ public final class RootArchitectureDelegate<
 
     @SuppressWarnings("unchecked")
     void replaceView(V rootView, View view) {
-        super.replaceView(rootView);
+        replaceView(rootView);
 
         subDelegate(view).replaceView(view);
     }
 
+    @SuppressWarnings("unchecked")
     @NonNull
     private ArchitectureDelegate subDelegate(View view) {
         String viewKey = view.tag();
-        if (!mSubDelegates.containsKey(viewKey)) {
 
+        if (!mSubDelegates.containsKey(viewKey)) {
+            mSubDelegates.put(viewKey, new ArchitectureDelegate(this, view.screenConfigurator()));
         }
 
         return mSubDelegates.get(viewKey);

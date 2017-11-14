@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegateHolder;
-import com.tarasantoshchuk.arch.core.core.RootArchitectureDelegate;
+import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.routing.BundleConverter;
 import com.tarasantoshchuk.arch.core.routing.Router;
@@ -17,7 +17,7 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
-import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.Logger;
 
@@ -25,7 +25,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 
 
-public abstract class BaseActivity<P> extends AppCompatActivity implements View<P>, RouterCallbackProvider {
+public abstract class BaseActivity<P> extends AppCompatActivity implements RootView<P>, RouterCallbackProvider {
     /* views implementation */
 
     ViewCallbacks<? extends Router> mViewCallbacks;
@@ -56,21 +56,21 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements View<
 
         Log.e("Activity", "onCreate");
 
-        RootArchitectureDelegate.onCreateView(this);
+        ArchitectureDelegates.onCreateView(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        RootArchitectureDelegate.onStart(this);
+        ArchitectureDelegates.onStart(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        RootArchitectureDelegate.onStop(this);
+        ArchitectureDelegates.onStop(this);
     }
 
     /* router implementation provider */
