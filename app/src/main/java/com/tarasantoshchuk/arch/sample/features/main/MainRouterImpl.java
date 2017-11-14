@@ -14,4 +14,11 @@ public class MainRouterImpl extends BaseRouter<MainPresenter, Screens> implement
 
         callback().startScreen(Screens.EDIT);
     }
+
+    @Override
+    public void openScreenWithFragment() {
+        Logger.v(this, "openScreenWithFragment");
+
+        callback().startScreen(Screens.WITH_FRAGMENT);
+    }
 }

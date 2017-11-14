@@ -65,7 +65,7 @@ public class ArchitectureDelegate<
 
     @Override
     public RouterCallback routerImplementation() {
-        return mParent.routerImplementation();
+        return mView.provideRouterImplementation();
     }
 
     void replaceView(V v) {

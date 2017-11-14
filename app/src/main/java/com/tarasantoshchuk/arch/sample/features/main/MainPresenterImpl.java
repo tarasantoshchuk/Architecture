@@ -39,6 +39,11 @@ class MainPresenterImpl extends BasePresenter<MainView, MainRouter, MainInteract
                 view.editClicks(),
                 this::openEditScreen
         );
+
+        observeView(
+                view.openOtherClicks(),
+                this::openScreenWithFragment
+        );
     }
 
     @Override
@@ -54,5 +59,10 @@ class MainPresenterImpl extends BasePresenter<MainView, MainRouter, MainInteract
     private void openEditScreen() {
         Logger.v(this, "onEditClick received");
         router().openEditScreen();
+    }
+
+    private void openScreenWithFragment() {
+        Logger.v(this, "onOtherClick received");
+        router().openScreenWithFragment();
     }
 }

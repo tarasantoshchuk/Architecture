@@ -6,9 +6,10 @@ import android.support.annotation.CallSuper;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.routing.Router;
+import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
 import com.tarasantoshchuk.arch.util.Logger;
 
-public interface View<P> {
+public interface View<P> extends RouterCallbackProvider {
     RootScreenConfigurator screenConfigurator();
 
     @CallSuper

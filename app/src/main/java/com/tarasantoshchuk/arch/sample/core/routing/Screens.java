@@ -7,6 +7,7 @@ import com.tarasantoshchuk.arch.sample.features.main.MainActivity;
 public enum Screens implements Screen {
     MAIN(MainActivity.class),
     EDIT(EditActivity.class),
+    WITH_FRAGMENT(EditActivity.class),
     TOASTER(null);
 
     Class<?> mScreenClass;
