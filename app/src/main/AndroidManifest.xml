@@ -16,5 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".features.edit.EditActivity" />
+        <activity android:name=".features.composite_screen.CompositeScreenActivity" />
     </application>
 </manifest>
