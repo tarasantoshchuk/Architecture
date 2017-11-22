@@ -33,15 +33,11 @@ public abstract class BaseView<P> extends android.view.View implements View<P> {
         super(context, attrs, defStyleAttr);
     }
 
-    private void initDelegate(Context context) {
-        ArchitectureDelegates.onCreateView((RootView) context, this);
-        ArchitectureDelegates.onStart((RootView) context, this);
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        initDelegate(getContext());
+        ArchitectureDelegates.onCreateView(getActivity(), this);
+        ArchitectureDelegates.onStart(getActivity(), this);
     }
 
     @Override
@@ -67,6 +63,11 @@ public abstract class BaseView<P> extends android.view.View implements View<P> {
 
     @Override
     protected void onDetachedFromWindow() {
+        ArchitectureDelegates.onStop(getActivity(), this);
         super.onDetachedFromWindow();
+    }
+
+    private RootView getActivity() {
+        return (RootView) getContext();
     }
 }

@@ -1,15 +1,13 @@
 package com.tarasantoshchuk.arch.core.core;
 
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.core.view.ViewId;
 import com.tarasantoshchuk.arch.util.Logger;
 
 import java.util.HashMap;
@@ -27,7 +25,7 @@ public final class RootArchitectureDelegate<
 {
     private I mInteractor;
 
-    private HashMap<String, ArchitectureDelegate> mSubDelegates = new HashMap<>();
+    private HashMap<ViewId, ArchitectureDelegate> mSubDelegates = new HashMap<>();
 
     RootArchitectureDelegate(RootScreenConfigurator<V, P, I, R> configurator) {
         super(null, configurator);
@@ -57,8 +55,8 @@ public final class RootArchitectureDelegate<
 
     @SuppressWarnings("unchecked")
     private ArchitectureDelegate subDelegate(View view) {
-        Logger.v(this, "subDelegate >>>, tag: " + view.tag());
-        return mSubDelegates.get(view.tag());
+        Logger.v(this, "subDelegate >>>, viewId: " + view.viewId());
+        return mSubDelegates.get(view.viewId());
     }
 
     @Override
@@ -84,7 +82,7 @@ public final class RootArchitectureDelegate<
             Logger.v(this, "subDelegate == null");
             subDelegate = new ArchitectureDelegate(this, view.screenConfigurator());
             subDelegate.onCreate();
-            mSubDelegates.put(view.tag(), subDelegate);
+            mSubDelegates.put(view.viewId(), subDelegate);
         } else {
             Logger.v(this, "subDelegate != null");
             subDelegate.replaceView(view);
