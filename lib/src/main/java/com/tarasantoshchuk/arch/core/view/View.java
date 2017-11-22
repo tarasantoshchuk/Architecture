@@ -18,8 +18,8 @@ public interface View<P> extends RouterCallbackProvider {
         Logger.v(this, "onAttachToPresenter, presenter " + presenter);
     }
 
-    default String tag() {
-        return getClass().getSimpleName();
+    default ViewId viewId() {
+        return new ViewId(getClass().getSimpleName());
     }
 
     void setCallback(ViewCallbacks<? extends Router> callbacks);

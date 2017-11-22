@@ -8,6 +8,7 @@ import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
+import com.tarasantoshchuk.arch.core.routing.callback_impl.SafeRouterCallback;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
@@ -65,7 +66,7 @@ public class ArchitectureDelegate<
 
     @Override
     public RouterCallback routerImplementation() {
-        return mView.provideRouterImplementation();
+        return new SafeRouterCallback(mView.provideRouterImplementation(), this);
     }
 
     void replaceView(V v) {
