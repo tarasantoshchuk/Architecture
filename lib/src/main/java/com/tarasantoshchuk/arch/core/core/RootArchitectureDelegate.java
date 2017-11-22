@@ -2,6 +2,7 @@ package com.tarasantoshchuk.arch.core.core;
 
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
@@ -9,6 +10,7 @@ import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.util.Logger;
 
 import java.util.HashMap;
 
@@ -46,21 +48,17 @@ public final class RootArchitectureDelegate<
 
     @SuppressWarnings("unchecked")
     void replaceView(V rootView, View view) {
+        Logger.v(this, "replaceView >>>");
         replaceView(rootView);
 
-        subDelegate(view).replaceView(view);
+        onSubViewCreate(view);
+        Logger.v(this, "replaceView <<<");
     }
 
     @SuppressWarnings("unchecked")
-    @NonNull
     private ArchitectureDelegate subDelegate(View view) {
-        String viewKey = view.tag();
-
-        if (!mSubDelegates.containsKey(viewKey)) {
-            mSubDelegates.put(viewKey, new ArchitectureDelegate(this, view.screenConfigurator()));
-        }
-
-        return mSubDelegates.get(viewKey);
+        Logger.v(this, "subDelegate >>>, tag: " + view.tag());
+        return mSubDelegates.get(view.tag());
     }
 
     @Override
@@ -75,11 +73,29 @@ public final class RootArchitectureDelegate<
     }
 
     void onCreate(View view) {
-        subDelegate(view).onCreate();
+        onSubViewCreate(view);
+    }
+
+    private void onSubViewCreate(View view) {
+        Logger.v(this, "onSubViewCreate >>>");
+        ArchitectureDelegate subDelegate = subDelegate(view);
+
+        if (subDelegate == null) {
+            Logger.v(this, "subDelegate == null");
+            subDelegate = new ArchitectureDelegate(this, view.screenConfigurator());
+            subDelegate.onCreate();
+            mSubDelegates.put(view.tag(), subDelegate);
+        } else {
+            Logger.v(this, "subDelegate != null");
+            subDelegate.replaceView(view);
+        }
+        Logger.v(this, "onSubViewCreate <<<");
     }
 
     void onStart(View view) {
+        Logger.v(this, "onStart >>>");
         subDelegate(view).onStart();
+        Logger.v(this, "onStart <<<");
     }
 
     void onStop(View view) {

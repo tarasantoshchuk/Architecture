@@ -20,9 +20,13 @@ import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.util.Action;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 
 public abstract class BaseFragment<P extends Presenter> extends Fragment implements View<P> {
     /* views implementation */
@@ -81,5 +85,16 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
 
     public RootView getRootView() {
         return (RootView) getActivity();
+    }
+
+    protected final <T> void observeState(Observable<T> observable, Action<T> observer) {
+        observable
+                .subscribe(
+                        stateObserver(observer)
+                );
+    }
+
+    private <T> Observer<T> stateObserver(Action<T> onNext) {
+        return mViewCallbacks.stateObserver(onNext);
     }
 }

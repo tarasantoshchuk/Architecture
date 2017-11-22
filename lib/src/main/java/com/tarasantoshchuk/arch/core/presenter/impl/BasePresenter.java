@@ -21,7 +21,10 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
         onCreate();
     }
 
-    protected abstract void onCreate();
+    //for overriding
+    protected void onCreate() {
+
+    }
 
     @Override
     public void onDestroy() {

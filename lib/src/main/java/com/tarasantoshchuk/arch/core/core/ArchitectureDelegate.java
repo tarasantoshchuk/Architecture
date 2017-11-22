@@ -34,9 +34,9 @@ public class ArchitectureDelegate<
         Provider<CachedActions> {
     private RootArchitectureDelegate<?, P, I, R> mParent;
 
-    protected V mView;
-    protected P mPresenter;
-    protected R mRouter;
+    private V mView;
+    private P mPresenter;
+    private R mRouter;
 
     private CachedActions<V> mViewActions = new CachedActions<>();
     private CompositeDisposable mUnsubscribeOnStopSubscriptions = new CompositeDisposable();
