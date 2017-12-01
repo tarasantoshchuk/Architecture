@@ -4,7 +4,7 @@ package com.tarasantoshchuk.arch.core.view;
 public final class ViewId {
     private final String mViewKey;
 
-    ViewId(String viewKey) {
+    public ViewId(String viewKey) {
         mViewKey = viewKey;
     }
 

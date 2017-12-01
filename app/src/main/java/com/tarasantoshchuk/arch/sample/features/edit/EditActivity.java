@@ -44,8 +44,6 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
 
     @Override
     public void onAttachToPresenter(EditPresenter presenter) {
-        super.onAttachToPresenter(presenter);
-
         observeState(
                 presenter.textLoaded(),
                 this::setText

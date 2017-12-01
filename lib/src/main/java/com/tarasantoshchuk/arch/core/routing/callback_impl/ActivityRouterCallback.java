@@ -13,7 +13,7 @@ import static com.tarasantoshchuk.arch.core.routing.Routers.intentFromBundle;
 import static com.tarasantoshchuk.arch.core.routing.Routers.intentWithBundle;
 import static com.tarasantoshchuk.arch.core.routing.ScreensResolver.requestCode;
 
-public class ActivityRouterCallback implements RouterCallback {
+public class ActivityRouterCallback extends BaseRouterCallback {
     private Activity mActivity;
 
     public ActivityRouterCallback(Activity activity) {
@@ -22,7 +22,6 @@ public class ActivityRouterCallback implements RouterCallback {
 
     @Override
     public final void startScreen(Screen screen, Bundle bundle) {
-        RouterCallback.super.startScreen(screen, bundle);
         Intent intent = intentWithBundle(mActivity, screen, bundle);
         launchActivity(screen, intent);
     }
@@ -33,14 +32,12 @@ public class ActivityRouterCallback implements RouterCallback {
 
     @Override
     public final void cancel(Bundle bundle) {
-        RouterCallback.super.cancel(bundle);
         mActivity.setResult(Activity.RESULT_CANCELED, intentFromBundle(bundle));
         mActivity.finish();
     }
 
     @Override
     public final void success(Bundle bundle) {
-        RouterCallback.super.success(bundle);
         mActivity.setResult(Activity.RESULT_OK, intentFromBundle(bundle));
         mActivity.finish();
     }

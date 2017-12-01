@@ -32,8 +32,6 @@ class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteract
 
     @Override
     public void onViewAttached(EditView view) {
-        super.onViewAttached(view);
-
         observeView(
                 view.saveClicks(),
                 this::saveText

@@ -15,7 +15,6 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
 
     @Override
     public final void onCreate(PresenterCallbacks<V, R, I> callbacks) {
-        Presenter.super.onCreate(callbacks);
         mCallbacks = callbacks;
 
         onCreate();
@@ -28,7 +27,6 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
 
     @Override
     public void onDestroy() {
-        Presenter.super.onDestroy();
         mCallbacks = null;
     }
 
@@ -36,10 +34,15 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
         return mCallbacks.modelObserver(onNext);
     }
 
-    protected final <T> void observeModel(Single<T> observable, Runnable onNext) {
+    protected final <T> void observeModel(Single<T> observable, final Runnable onNext) {
         observable
                 .subscribe(
-                        modelObserver(__ -> onNext.run())
+                        modelObserver(new Action<Object>() {
+                            @Override
+                            public void apply(Object __) {
+                                onNext.run();
+                            }
+                        })
                 );
     }
 
@@ -56,10 +59,15 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
                 );
     }
 
-    protected final <T> void observeView(Observable<T> observable, Runnable onNext) {
+    protected final <T> void observeView(Observable<T> observable, final Runnable onNext) {
         observable
                 .subscribe(
-                        viewObserver(__ -> onNext.run())
+                        viewObserver(new Action<Object>() {
+                            @Override
+                            public void apply(Object __) {
+                                onNext.run();
+                            }
+                        })
                 );
     }
 

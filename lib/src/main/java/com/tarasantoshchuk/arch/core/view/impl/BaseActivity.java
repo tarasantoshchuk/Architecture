@@ -17,6 +17,7 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
+import com.tarasantoshchuk.arch.core.view.ViewId;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.Logger;
 
@@ -100,5 +101,10 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements RootV
                 .subscribe(
                         stateObserver(observer)
                 );
+    }
+
+    @Override
+    public ViewId viewId() {
+        return new ViewId(getClass().getSimpleName());
     }
 }

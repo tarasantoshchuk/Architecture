@@ -20,6 +20,7 @@ import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.core.view.ViewId;
 import com.tarasantoshchuk.arch.util.Action;
 
 import javax.inject.Inject;
@@ -96,5 +97,10 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
 
     private <T> Observer<T> stateObserver(Action<T> onNext) {
         return mViewCallbacks.stateObserver(onNext);
+    }
+
+    @Override
+    public ViewId viewId() {
+        return new ViewId(getClass().getSimpleName());
     }
 }

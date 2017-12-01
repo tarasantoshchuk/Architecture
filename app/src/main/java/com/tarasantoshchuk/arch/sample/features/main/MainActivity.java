@@ -85,8 +85,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 
     @Override
     public void onAttachToPresenter(MainPresenter presenter) {
-        super.onAttachToPresenter(presenter);
-
         observeState(
                 presenter.editEnabled(),
                 this::enableEdit

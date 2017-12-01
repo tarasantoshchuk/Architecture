@@ -63,8 +63,6 @@ public class FragmentImpl extends BaseFragment<FragmentViewPresenter> implements
 
     @Override
     public void onAttachToPresenter(FragmentViewPresenter presenter) {
-        super.onAttachToPresenter(presenter);
-
         observeState(presenter.switchChanged(),
                 this::changeColor);
     }

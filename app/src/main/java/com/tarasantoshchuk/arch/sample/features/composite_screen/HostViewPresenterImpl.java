@@ -41,7 +41,6 @@ class HostViewPresenterImpl extends BasePresenter<HostView, Router, Interactor> 
 
     @Override
     public void onViewAttached(HostView view) {
-        super.onViewAttached(view);
         observeView(view.switched(),
                 this::changed);
     }

@@ -21,7 +21,7 @@ public abstract class ScreensResolver<T extends ScreensResolver.Screen> {
     }
 
     @SuppressWarnings("unchecked")
-    public static Class<?> screenClass(Screen screen) {
+    static Class<?> screenClass(Screen screen) {
         return sInstance.toScreenClass(screen);
     }
 

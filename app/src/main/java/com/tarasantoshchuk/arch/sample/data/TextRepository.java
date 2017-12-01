@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class TextRepository implements Repository<String> {
@@ -28,11 +29,23 @@ public class TextRepository implements Repository<String> {
     }
 
     @Override
+    public Observable<String> getOnMainThread() {
+        return get()
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Single<Null> set(String s) {
         mSubject.onNext(s);
 
         return Single
                 .just(Null.INSTANCE)
                 .delay(5, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public Single<Null> setOnMainThread(String s) {
+        return set(s)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -8,7 +8,7 @@ import com.tarasantoshchuk.arch.util.CachedActions;
 
 import javax.inject.Provider;
 
-public class SafeRouterCallback implements RouterCallback {
+public class SafeRouterCallback extends BaseRouterCallback {
     private RouterCallback mInner;
     private Provider<CachedActions> mViewActionsProvider;
 
@@ -18,21 +18,33 @@ public class SafeRouterCallback implements RouterCallback {
     }
 
     @Override
-    public void startScreen(ScreensResolver.Screen screen, Bundle extras) {
-        RouterCallback.super.startScreen(screen, extras);
-        submit(view -> mInner.startScreen(screen, extras));
+    public void startScreen(final ScreensResolver.Screen screen, final Bundle extras) {
+        submit(new Action() {
+            @Override
+            public void apply(Object view) {
+                mInner.startScreen(screen, extras);
+            }
+        });
     }
 
     @Override
-    public void cancel(Bundle extras) {
-        RouterCallback.super.cancel(extras);
-        submit(view -> mInner.cancel(extras));
+    public void cancel(final Bundle extras) {
+        submit(new Action() {
+            @Override
+            public void apply(Object view) {
+                mInner.cancel(extras);
+            }
+        });
     }
 
     @Override
-    public void success(Bundle extras) {
-        RouterCallback.super.success(extras);
-        submit(view -> mInner.success(extras));
+    public void success(final Bundle extras) {
+        submit(new Action() {
+            @Override
+            public void apply(Object view) {
+                mInner.success(extras);
+            }
+        });
     }
 
     @Override

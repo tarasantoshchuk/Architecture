@@ -33,8 +33,6 @@ class MainPresenterImpl extends BasePresenter<MainView, MainRouter, MainInteract
 
     @Override
     public void onViewAttached(MainView view) {
-        super.onViewAttached(view);
-
         observeView(
                 view.editClicks(),
                 this::openEditScreen
