@@ -14,13 +14,9 @@ public interface Bundle {
     void putInt(String key, int value);
     void putSerializable(String key, Serializable serializable);
 
-    default String getString(String key) {
-        return getString(key, null);
-    }
+    String getString(String key);
 
-    default int getInt(String key) {
-        return getInt(key, 0);
-    }
+    int getInt(String key);
 
     String getString(String key, String defaultValue);
     int getInt(String key, int value);

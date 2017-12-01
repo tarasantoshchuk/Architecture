@@ -13,6 +13,7 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
+import com.tarasantoshchuk.arch.core.view.ViewId;
 import com.tarasantoshchuk.arch.util.Action;
 
 import io.reactivex.Observable;
@@ -69,5 +70,10 @@ public abstract class BaseView<P> extends android.view.View implements View<P> {
 
     private RootView getActivity() {
         return (RootView) getContext();
+    }
+
+    @Override
+    public ViewId viewId() {
+        return new ViewId(getClass().getSimpleName());
     }
 }

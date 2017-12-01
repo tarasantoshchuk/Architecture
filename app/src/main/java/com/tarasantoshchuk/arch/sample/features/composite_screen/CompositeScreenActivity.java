@@ -84,8 +84,6 @@ public class CompositeScreenActivity extends BaseActivity<HostViewPresenter> imp
 
     @Override
     public void onAttachToPresenter(HostViewPresenter presenter) {
-        super.onAttachToPresenter(presenter);
-
         observeState(presenter.textChanged(),
                 this::setText);
 

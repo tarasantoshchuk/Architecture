@@ -33,7 +33,6 @@ public class CustomViewPresenterImpl extends BasePresenter<Contract.CustomView, 
 
     @Override
     public void onViewAttached(Contract.CustomView view) {
-        super.onViewAttached(view);
         observeView(view.touched(), this::clicked);
     }
 
