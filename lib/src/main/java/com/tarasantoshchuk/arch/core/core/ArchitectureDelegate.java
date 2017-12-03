@@ -14,8 +14,6 @@ import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
 import com.tarasantoshchuk.arch.util.Logger;
 
-import javax.inject.Provider;
-
 import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.CompositeDisposable;
@@ -31,8 +29,7 @@ public class ArchitectureDelegate<
 
         PresenterCallbacks<V, R, I>,
         ViewCallbacks<R>,
-        RouterCallbacks<P>,
-        Provider<CachedActions> {
+        RouterCallbacks<P> {
     private RootArchitectureDelegate<?, P, I, R> mParent;
 
     private V mView;
@@ -40,8 +37,9 @@ public class ArchitectureDelegate<
     private R mRouter;
 
     private CachedActions<V> mViewActions = new CachedActions<>();
-    private CompositeDisposable mUnsubscribeOnStopSubscriptions = new CompositeDisposable();
+
     private CompositeDisposable mUnsubscribeOnDestroySubscriptions = new CompositeDisposable();
+    private CompositeDisposable mUnsubscribeOnStopSubscriptions = new CompositeDisposable();
 
     ArchitectureDelegate(RootArchitectureDelegate<?, P, I, R> parent, ScreenConfigurator<V, P, R> configurator) {
         mParent = parent;
@@ -65,8 +63,23 @@ public class ArchitectureDelegate<
     }
 
     @Override
+    public void applyOnView(Action<V> action) {
+        mViewActions.submit(action);
+    }
+
+    @Override
+    public void unsubscribeOnDetach(Disposable disposable) {
+        mUnsubscribeOnStopSubscriptions.add(disposable);
+    }
+
+    @Override
+    public void unsubscribeOnDestory(Disposable disposable) {
+        mUnsubscribeOnDestroySubscriptions.add(disposable);
+    }
+
+    @Override
     public RouterCallback routerImplementation() {
-        return new SafeRouterCallback(mView.provideRouterImplementation(), this);
+        return new SafeRouterCallback<>(mView.provideRouterImplementation(), () -> mViewActions);
     }
 
     void replaceView(V v) {
@@ -109,21 +122,6 @@ public class ArchitectureDelegate<
         mUnsubscribeOnDestroySubscriptions.clear();
 
         mPresenter.onDestroy();
-    }
-
-    @Override
-    public CachedActions<? extends View> get() {
-        return mViewActions;
-    }
-
-    @Override
-    public <T> Observer<T> viewObserver(Action<T> onNext) {
-        return new AutoUnsubscribeObserver<>(onNext, mUnsubscribeOnStopSubscriptions);
-    }
-
-    @Override
-    public <T> SingleObserver<T> modelObserver(Action<T> onNext) {
-        return new AutoUnsubscribeObserver<>(onNext, mUnsubscribeOnDestroySubscriptions);
     }
 
     @Override

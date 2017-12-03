@@ -7,8 +7,10 @@ import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditRouter;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView.EditPresenter;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
+import com.tarasantoshchuk.arch.util.Null;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 
 class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteractor> implements EditPresenter {
@@ -34,15 +36,11 @@ class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteract
     public void onViewAttached(EditView view) {
         super.onViewAttached(view);
 
-        observeView(
-                view.saveClicks(),
-                this::saveText
-        );
+        viewObservable(view.saveClicks())
+                .subscribe(__ -> saveText());
 
-        observeView(
-                view.textChanged(),
-                this::updateText
-        );
+        viewObservable(view.textChanged())
+                .subscribe(this::updateText);
     }
 
     @Override
@@ -64,8 +62,7 @@ class EditPresenterImpl extends BasePresenter<EditView, EditRouter, EditInteract
     }
 
     private void saveText() {
-        observeModel(
-                interactor().saveText(mSavedText.getValue()),
-                () -> router().finish());
+        modelObservable(interactor().saveText(mSavedText.getValue()))
+                .subscribe(aNull -> router().finish());
     }
 }

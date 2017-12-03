@@ -33,8 +33,8 @@ class FragmentPresenterImpl extends BasePresenter<FragmentView, Router, Interact
     public void onViewAttached(FragmentView view) {
         super.onViewAttached(view);
 
-        observeView(view.textEdited(),
-                this::textChanged);
+        viewObservable(view.textEdited())
+                .subscribe(this::textChanged);
     }
 
     private void textChanged(String text) {

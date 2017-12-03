@@ -3,16 +3,17 @@ package com.tarasantoshchuk.arch.core.routing.callback_impl;
 import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
+import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
 
 import javax.inject.Provider;
 
-public class SafeRouterCallback implements RouterCallback {
+public class SafeRouterCallback<V extends View> implements RouterCallback {
     private RouterCallback mInner;
-    private Provider<CachedActions> mViewActionsProvider;
+    private Provider<CachedActions<V>> mViewActionsProvider;
 
-    public SafeRouterCallback(RouterCallback inner, Provider<CachedActions> provider) {
+    public SafeRouterCallback(RouterCallback inner, Provider<CachedActions<V>> provider) {
         mInner = inner;
         mViewActionsProvider = provider;
     }
@@ -40,8 +41,7 @@ public class SafeRouterCallback implements RouterCallback {
         return mInner.startData();
     }
 
-    @SuppressWarnings("unchecked")
-    private void submit(Action action) {
+    private void submit(Action<V> action) {
         mViewActionsProvider
                 .get()
                 .submit(action);

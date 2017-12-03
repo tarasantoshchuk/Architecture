@@ -6,6 +6,7 @@ import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
 import com.tarasantoshchuk.arch.util.Null;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class CustomViewPresenterImpl extends BasePresenter<Contract.CustomView, Contract.Router, Contract.Interactor> implements Contract.CustomView.CustomViewPresenter {
@@ -34,7 +35,9 @@ public class CustomViewPresenterImpl extends BasePresenter<Contract.CustomView, 
     @Override
     public void onViewAttached(Contract.CustomView view) {
         super.onViewAttached(view);
-        observeView(view.touched(), this::clicked);
+
+        viewObservable(view.touched())
+                .subscribe(this::clicked);
     }
 
     private void clicked(Null n) {

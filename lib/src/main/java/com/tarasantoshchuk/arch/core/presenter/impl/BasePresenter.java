@@ -6,9 +6,7 @@ import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.util.Action;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 
 public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
     private PresenterCallbacks<V, R, I> mCallbacks;
@@ -32,35 +30,19 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
         mCallbacks = null;
     }
 
-    private <T> SingleObserver<T> modelObserver(Action<T> onNext) {
-        return mCallbacks.modelObserver(onNext);
+    protected void applyOnView(Action<V> action) {
+        mCallbacks
+                .applyOnView(action);
     }
 
-    protected final <T> void observeModel(Single<T> observable, Runnable onNext) {
-        observable
-                .subscribe(
-                        modelObserver(__ -> onNext.run())
-                );
+    protected <T> Observable<T> viewObservable(Observable<T> source) {
+        return source
+                .doOnSubscribe(mCallbacks::unsubscribeOnDetach);
     }
 
-
-
-    private <T> Observer<T> viewObserver(Action<T> onNext) {
-        return mCallbacks.viewObserver(onNext);
-    }
-
-    protected final <T> void observeView(Observable<T> observable, Action<T> onNext) {
-        observable
-                .subscribe(
-                        viewObserver(onNext)
-                );
-    }
-
-    protected final <T> void observeView(Observable<T> observable, Runnable onNext) {
-        observable
-                .subscribe(
-                        viewObserver(__ -> onNext.run())
-                );
+    protected <T> Single<T> modelObservable(Single<T> source) {
+        return source
+                .doOnSubscribe(mCallbacks::unsubscribeOnDetach);
     }
 
     protected final R router() {
