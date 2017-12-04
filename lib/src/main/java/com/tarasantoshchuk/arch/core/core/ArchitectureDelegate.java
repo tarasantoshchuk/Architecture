@@ -91,8 +91,8 @@ public class ArchitectureDelegate<
     void onCreate() {
         Logger.v(this, "onCreate");
 
-        mPresenter.onCreate(this);
         mRouter.onCreate(this);
+        mPresenter.onCreate(this);
 
         mView.setCallback(this);
     }
