@@ -46,15 +46,11 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     public void onAttachToPresenter(EditPresenter presenter) {
         super.onAttachToPresenter(presenter);
 
-        observeState(
-                presenter.textLoaded(),
-                this::setText
-        );
+        stateObservable(presenter.textLoaded())
+                .subscribe(this::setText);
 
-        observeState(
-                presenter.uiEnabled(),
-                this::enableUi
-        );
+        stateObservable(presenter.uiEnabled())
+                .subscribe(this::enableUi);
     }
 
     @Override

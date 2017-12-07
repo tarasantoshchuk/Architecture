@@ -10,34 +10,23 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
-import com.tarasantoshchuk.arch.core.core.RootArchitectureDelegate;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.BundleConverter;
-import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
-import com.tarasantoshchuk.arch.util.Action;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 
 public abstract class BaseFragment<P extends Presenter> extends Fragment implements View<P> {
     /* views implementation */
-
-    @Inject
-    Provider<RootArchitectureDelegate> mArchitectureProvider;
-
-    private ViewCallbacks<? extends Router> mViewCallbacks;
+    private ViewCallbacks mViewCallbacks;
 
     @Override
-    public final void setCallback(ViewCallbacks<? extends Router> callbacks) {
+    public final void setCallback(ViewCallbacks callbacks) {
         mViewCallbacks = callbacks;
     }
 
@@ -69,32 +58,24 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
         return Routers.fromSupportFragment(this);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         mViewCallbacks
-                .router()
-                .onScreenResult(
+                .notifyScreenResult(
                         resultCode == Activity.RESULT_OK,
                         ScreensResolver.screen(resultCode),
                         BundleConverter.fromIntent(data)
                 );
     }
 
-    public RootView getRootView() {
+    private RootView getRootView() {
         return (RootView) getActivity();
     }
 
-    protected final <T> void observeState(Observable<T> observable, Action<T> observer) {
-        observable
-                .subscribe(
-                        stateObserver(observer)
-                );
-    }
-
-    private <T> Observer<T> stateObserver(Action<T> onNext) {
-        return mViewCallbacks.stateObserver(onNext);
+    protected <T> Observable<T> stateObservable(Observable<T> observable) {
+        return observable
+                .doOnSubscribe(mViewCallbacks::unsubscribeOnDetach);
     }
 }

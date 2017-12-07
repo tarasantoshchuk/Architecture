@@ -2,7 +2,7 @@ package com.tarasantoshchuk.arch.core.interactor.impl;
 
 
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 public abstract class BaseInteractor implements Interactor {
 

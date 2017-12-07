@@ -5,6 +5,7 @@ import com.tarasantoshchuk.arch.core.core.PresenterCallbacks;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.util.Action;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -42,7 +43,12 @@ public abstract class BasePresenter<V, R, I> implements Presenter<V, R, I> {
 
     protected <T> Single<T> modelObservable(Single<T> source) {
         return source
-                .doOnSubscribe(mCallbacks::unsubscribeOnDetach);
+                .doOnSubscribe(mCallbacks::unsubscribeOnDestroy);
+    }
+
+    protected Completable modelObservable(Completable source) {
+        return source
+                .doOnSubscribe(mCallbacks::unsubscribeOnDestroy);
     }
 
     protected final R router() {

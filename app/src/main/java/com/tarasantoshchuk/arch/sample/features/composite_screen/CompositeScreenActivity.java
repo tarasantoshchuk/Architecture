@@ -17,7 +17,6 @@ import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.HostView;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.HostView.HostViewPresenter;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.Interactor;
-import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,18 +85,18 @@ public class CompositeScreenActivity extends BaseActivity<HostViewPresenter> imp
     public void onAttachToPresenter(HostViewPresenter presenter) {
         super.onAttachToPresenter(presenter);
 
-        observeState(presenter.textChanged(),
-                this::setText);
+        stateObservable(presenter.textChanged())
+                .subscribe(this::setText);
 
-        observeState(presenter.click(),
-                this::changeVisibility);
+        stateObservable(presenter.click())
+                .subscribe(__ -> changeVisibility());
     }
 
     private void setText(String text) {
         mText.setText(text);
     }
 
-    private void changeVisibility(Null n) {
+    private void changeVisibility() {
         if (mText.getVisibility() == View.VISIBLE) {
             mText.setVisibility(View.INVISIBLE);
         } else {

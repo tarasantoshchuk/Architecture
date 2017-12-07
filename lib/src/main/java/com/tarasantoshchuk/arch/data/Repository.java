@@ -1,14 +1,12 @@
 package com.tarasantoshchuk.arch.data;
 
-import com.tarasantoshchuk.arch.util.Null;
-
-import io.reactivex.Single;
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public interface Repository<T> extends ReadOnlyRepository<T> {
-    Single<Null> set(T t);
+    Completable set(T t);
 
-    default Single<Null> setOnMainThread(T t) {
+    default Completable setOnMainThread(T t) {
         return set(t)
                 .observeOn(AndroidSchedulers.mainThread());
     }

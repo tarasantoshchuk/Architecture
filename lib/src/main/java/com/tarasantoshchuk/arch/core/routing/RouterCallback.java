@@ -2,7 +2,7 @@ package com.tarasantoshchuk.arch.core.routing;
 
 import android.support.annotation.CallSuper;
 
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 public interface RouterCallback {
     @CallSuper

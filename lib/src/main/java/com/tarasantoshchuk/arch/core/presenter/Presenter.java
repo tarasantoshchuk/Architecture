@@ -4,7 +4,7 @@ package com.tarasantoshchuk.arch.core.presenter;
 import android.support.annotation.CallSuper;
 
 import com.tarasantoshchuk.arch.core.core.PresenterCallbacks;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 public interface Presenter<V, R, I> {
     @CallSuper

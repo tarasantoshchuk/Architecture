@@ -6,16 +6,23 @@ import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
+import com.tarasantoshchuk.arch.util.Provider;
 
-import javax.inject.Provider;
 
 public class SafeRouterCallback<V extends View> implements RouterCallback {
     private RouterCallback mInner;
     private Provider<CachedActions<V>> mViewActionsProvider;
 
+    /**
+     * View absence should not delay retrieving of {@link #startData()}
+     */
+    private Bundle mStartData;
+
     public SafeRouterCallback(RouterCallback inner, Provider<CachedActions<V>> provider) {
         mInner = inner;
         mViewActionsProvider = provider;
+
+        mStartData = inner.startData();
     }
 
     @Override
@@ -38,7 +45,7 @@ public class SafeRouterCallback<V extends View> implements RouterCallback {
 
     @Override
     public Bundle startData() {
-        return mInner.startData();
+        return mStartData;
     }
 
     private void submit(Action<V> action) {

@@ -3,7 +3,7 @@ package com.tarasantoshchuk.arch.sample.utils;
 
 import android.support.annotation.CallSuper;
 
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;

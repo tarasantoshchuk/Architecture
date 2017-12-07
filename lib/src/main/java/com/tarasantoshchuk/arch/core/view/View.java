@@ -4,11 +4,9 @@ package com.tarasantoshchuk.arch.core.view;
 import android.support.annotation.CallSuper;
 
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
-import com.tarasantoshchuk.arch.core.di.RootScreenConfigurator;
 import com.tarasantoshchuk.arch.core.di.ScreenConfigurator;
-import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallbackProvider;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 public interface View<P> extends RouterCallbackProvider {
     ScreenConfigurator screenConfigurator();
@@ -22,5 +20,5 @@ public interface View<P> extends RouterCallbackProvider {
         return new ViewId(getClass().getSimpleName());
     }
 
-    void setCallback(ViewCallbacks<? extends Router> callbacks);
+    void setCallback(ViewCallbacks callbacks);
 }

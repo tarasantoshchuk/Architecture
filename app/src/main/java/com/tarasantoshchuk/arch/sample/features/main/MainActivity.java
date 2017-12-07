@@ -12,7 +12,7 @@ import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView.MainPresenter;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;
@@ -87,14 +87,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
     public void onAttachToPresenter(MainPresenter presenter) {
         super.onAttachToPresenter(presenter);
 
-        observeState(
-                presenter.editEnabled(),
-                this::enableEdit
-        );
+        stateObservable(presenter.editEnabled())
+                .subscribe(this::enableEdit);
 
-        observeState(
-                presenter.text(),
-                this::setText
-        );
+        stateObservable(presenter.text())
+                .subscribe(this::setText);
     }
 }

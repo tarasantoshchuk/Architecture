@@ -1,21 +1,19 @@
 package com.tarasantoshchuk.arch.core.core;
 
 
-import android.support.annotation.CallSuper;
-
 import com.tarasantoshchuk.arch.core.di.ScreenConfigurator;
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
+import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
+import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.routing.callback_impl.SafeRouterCallback;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.util.Action;
 import com.tarasantoshchuk.arch.util.CachedActions;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
-import io.reactivex.Observer;
-import io.reactivex.SingleObserver;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -28,7 +26,7 @@ public class ArchitectureDelegate<
         implements
 
         PresenterCallbacks<V, R, I>,
-        ViewCallbacks<R>,
+        ViewCallbacks,
         RouterCallbacks<P> {
     private RootArchitectureDelegate<?, P, I, R> mParent;
 
@@ -73,7 +71,7 @@ public class ArchitectureDelegate<
     }
 
     @Override
-    public void unsubscribeOnDestory(Disposable disposable) {
+    public void unsubscribeOnDestroy(Disposable disposable) {
         mUnsubscribeOnDestroySubscriptions.add(disposable);
     }
 
@@ -124,47 +122,10 @@ public class ArchitectureDelegate<
         mPresenter.onDestroy();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T> Observer<T> stateObserver(Action<T> onNext) {
-        return new AutoUnsubscribeObserver<>(onNext, mUnsubscribeOnStopSubscriptions);
-    }
-
-    final class AutoUnsubscribeObserver<T> implements Observer<T>, SingleObserver<T> {
-        private final Action<T> mOnNext;
-        private final CompositeDisposable mDisposablesCollector;
-
-        AutoUnsubscribeObserver(Action<T> onNext, CompositeDisposable disposablesCollector) {
-            mOnNext = onNext;
-            mDisposablesCollector = disposablesCollector;
-        }
-
-        @Override
-        @CallSuper
-        public void onSubscribe(Disposable d) {
-            Logger.v(this, "onSubscribe");
-            mDisposablesCollector.add(d);
-        }
-
-        @Override
-        public void onSuccess(T t) {
-            Logger.v(this, "onSuccess, value " + t);
-            mOnNext.apply(t);
-        }
-
-        @Override
-        public void onNext(T t) {
-            Logger.v(this, "onNext, value " + t);
-            mOnNext.apply(t);
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            Logger.e(this, "onError", e);
-        }
-
-        @Override
-        public void onComplete() {
-            Logger.v(this, "onComplete");
-        }
+    public void notifyScreenResult(boolean isOk, ScreensResolver.Screen screen, Bundle bundle) {
+        router()
+                .onScreenResult(isOk, screen, bundle);
     }
 }

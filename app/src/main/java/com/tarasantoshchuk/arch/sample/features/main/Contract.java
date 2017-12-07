@@ -15,6 +15,8 @@ interface Contract {
         Observable<Null> editClicks();
         Observable<Null> openOtherClicks();
 
+
+
         interface MainPresenter extends Presenter<MainView, MainRouter, MainInteractor> {
             Observable<String> text();
             Observable<Boolean> editEnabled();

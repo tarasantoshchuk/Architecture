@@ -1,12 +1,13 @@
 package com.tarasantoshchuk.arch.core.core;
 
 
-import com.tarasantoshchuk.arch.util.Action;
+import com.tarasantoshchuk.arch.core.routing.Bundle;
+import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 
-import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
-public interface ViewCallbacks<R> {
-    R router();
+public interface ViewCallbacks{
+    void notifyScreenResult(boolean isOk, ScreensResolver.Screen screen, Bundle bundle);
 
-    <T> Observer<T> stateObserver(Action<T> onNext);
+    void unsubscribeOnDetach(Disposable d);
 }

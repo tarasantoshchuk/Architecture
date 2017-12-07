@@ -6,28 +6,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegateHolder;
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.routing.BundleConverter;
-import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.RootView;
-import com.tarasantoshchuk.arch.util.Action;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 
 
 public abstract class BaseActivity<P> extends AppCompatActivity implements RootView<P> {
     /* views implementation */
 
-    ViewCallbacks<? extends Router> mViewCallbacks;
+    ViewCallbacks mViewCallbacks;
 
     @Override
     public final ArchitectureDelegateHolder architectureHolder() {
@@ -37,14 +33,10 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements RootV
     }
 
     @Override
-    public final void setCallback(ViewCallbacks<? extends Router> callbacks) {
+    public final void setCallback(ViewCallbacks callbacks) {
         Logger.v(this, "setCallback");
 
         mViewCallbacks = callbacks;
-    }
-
-    private <T> Observer<T> stateObserver(Action<T> onNext) {
-        return mViewCallbacks.stateObserver(onNext);
     }
 
     /* delegation to architecture delegate */
@@ -53,7 +45,7 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements RootV
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.e("Activity", "onCreate");
+        Logger.v(this, "onCreate");
 
         ArchitectureDelegates.onCreateView(this);
     }
@@ -79,26 +71,20 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements RootV
         return Routers.fromActivity(this);
     }
 
-    @SuppressWarnings("unchecked")
+    protected final <T> Observable<T> stateObservable(Observable<T> observable) {
+        return observable
+                .doOnSubscribe(mViewCallbacks::unsubscribeOnDetach);
+    }
+
     @Override
     protected final void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         mViewCallbacks
-                .router()
-                .onScreenResult(
+                .notifyScreenResult(
                         Activity.RESULT_OK == resultCode,
                         ScreensResolver.screen(requestCode),
                         BundleConverter.fromIntent(data)
-                );
-    }
-
-    /* helper methods */
-
-    protected final <T> void observeState(Observable<T> observable, Action<T> observer) {
-        observable
-                .subscribe(
-                        stateObserver(observer)
                 );
     }
 }

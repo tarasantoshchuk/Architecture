@@ -8,7 +8,7 @@ import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.core.view.ViewId;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 import java.util.HashMap;
 
@@ -74,6 +74,7 @@ public final class RootArchitectureDelegate<
         onSubViewCreate(view);
     }
 
+    @SuppressWarnings("unchecked")
     private void onSubViewCreate(View view) {
         Logger.v(this, "onSubViewCreate >>>");
         ArchitectureDelegate subDelegate = subDelegate(view);

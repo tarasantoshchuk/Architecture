@@ -3,6 +3,8 @@ package com.tarasantoshchuk.arch.util;
 
 import android.support.annotation.NonNull;
 
+import com.tarasantoshchuk.arch.util.log.Logger;
+
 import java.util.LinkedList;
 import java.util.Queue;
 

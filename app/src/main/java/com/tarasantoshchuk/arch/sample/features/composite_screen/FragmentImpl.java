@@ -52,7 +52,7 @@ public class FragmentImpl extends BaseFragment<FragmentViewPresenter> implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment, null);
+        return inflater.inflate(R.layout.fragment, container, false);
     }
 
     @Override
@@ -65,8 +65,8 @@ public class FragmentImpl extends BaseFragment<FragmentViewPresenter> implements
     public void onAttachToPresenter(FragmentViewPresenter presenter) {
         super.onAttachToPresenter(presenter);
 
-        observeState(presenter.switchChanged(),
-                this::changeColor);
+        stateObservable(presenter.switchChanged())
+                .subscribe(this::changeColor);
     }
 
     private void changeColor(boolean value) {

@@ -1,12 +1,11 @@
 package com.tarasantoshchuk.arch.sample.data;
 
 import com.tarasantoshchuk.arch.data.Repository;
-import com.tarasantoshchuk.arch.util.Null;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class TextRepository implements Repository<String> {
@@ -28,11 +27,11 @@ public class TextRepository implements Repository<String> {
     }
 
     @Override
-    public Single<Null> set(String s) {
+    public Completable set(String s) {
         mSubject.onNext(s);
 
-        return Single
-                .just(Null.INSTANCE)
+        return Completable
+                .complete()
                 .delay(5, TimeUnit.SECONDS);
     }
 }

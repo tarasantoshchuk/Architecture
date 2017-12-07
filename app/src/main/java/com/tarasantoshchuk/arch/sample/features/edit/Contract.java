@@ -8,8 +8,8 @@ import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.sample.core.routing.Screens;
 import com.tarasantoshchuk.arch.util.Null;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 interface Contract {
     interface EditView extends RootView<EditView.EditPresenter> {
@@ -24,7 +24,7 @@ interface Contract {
 
     interface EditInteractor extends Interactor {
         Observable<String> getSavedText();
-        Single<Null> saveText(String value);
+        Completable saveText(String value);
     }
 
     interface EditRouter extends Router<EditView.EditPresenter, Screens> {

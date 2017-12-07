@@ -8,18 +8,15 @@ import android.util.AttributeSet;
 
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
-import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.core.view.View;
-import com.tarasantoshchuk.arch.util.Action;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 
 public abstract class BaseView<P> extends android.view.View implements View<P> {
-    ViewCallbacks<? extends Router> mViewCallbacks;
+    private ViewCallbacks mViewCallbacks;
 
     public BaseView(Context context) {
         super(context);
@@ -46,19 +43,13 @@ public abstract class BaseView<P> extends android.view.View implements View<P> {
     }
 
     @Override
-    public void setCallback(ViewCallbacks<? extends Router> callbacks) {
+    public void setCallback(ViewCallbacks callbacks) {
         mViewCallbacks = callbacks;
     }
 
-    protected final <T> void observeState(Observable<T> observable, Action<T> observer) {
-        observable
-                .subscribe(
-                        stateObserver(observer)
-                );
-    }
-
-    private <T> Observer<T> stateObserver(Action<T> onNext) {
-        return mViewCallbacks.stateObserver(onNext);
+    protected <T> Observable<T> stateObservable(Observable<T> observable) {
+        return observable
+                .doOnSubscribe(mViewCallbacks::unsubscribeOnDetach);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.tarasantoshchuk.arch.sample.features.main.Contract.MainRouter;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView.MainPresenter;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;

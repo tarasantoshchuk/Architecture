@@ -9,7 +9,7 @@ import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
-import com.tarasantoshchuk.arch.util.Logger;
+import com.tarasantoshchuk.arch.util.log.Logger;
 
 public class BaseRouter<P, S extends Screen> implements Router<P, S> {
     private RouterCallbacks<P> mCallbacks;

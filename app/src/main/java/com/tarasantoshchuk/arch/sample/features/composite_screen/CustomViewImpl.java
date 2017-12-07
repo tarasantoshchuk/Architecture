@@ -66,8 +66,8 @@ public class CustomViewImpl extends BaseView<CustomViewPresenter> implements Cus
     public void onAttachToPresenter(CustomViewPresenter presenter) {
         super.onAttachToPresenter(presenter);
 
-        observeState(presenter.switchChanged(),
-                this::changeColor);
+        stateObservable(presenter.switchChanged())
+                .subscribe(this::changeColor);
     }
 
     private void changeColor(boolean v) {
