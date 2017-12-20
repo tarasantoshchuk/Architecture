@@ -65,7 +65,7 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
         mViewCallbacks
                 .notifyScreenResult(
                         resultCode == Activity.RESULT_OK,
-                        ScreensResolver.screen(resultCode),
+                        ScreensResolver.screen(requestCode),
                         BundleConverter.fromIntent(data)
                 );
     }
