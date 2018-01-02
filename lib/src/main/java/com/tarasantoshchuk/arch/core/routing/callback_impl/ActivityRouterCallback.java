@@ -4,13 +4,9 @@ package com.tarasantoshchuk.arch.core.routing.callback_impl;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
 
-import static com.tarasantoshchuk.arch.core.routing.BundleConverter.fromIntent;
-import static com.tarasantoshchuk.arch.core.routing.Routers.intentFromBundle;
-import static com.tarasantoshchuk.arch.core.routing.Routers.intentWithBundle;
 import static com.tarasantoshchuk.arch.core.routing.ScreensResolver.requestCode;
 
 public class ActivityRouterCallback implements RouterCallback {
@@ -21,10 +17,10 @@ public class ActivityRouterCallback implements RouterCallback {
     }
 
     @Override
-    public final void startScreen(Screen screen, Bundle bundle) {
-        RouterCallback.super.startScreen(screen, bundle);
-        Intent intent = intentWithBundle(mActivity, screen, bundle);
-        launchActivity(screen, intent);
+    public final void startScreen(Screen screen, Intent data) {
+        RouterCallback.super.startScreen(screen, data);
+        data.setClass(mActivity, screen.getClass());
+        launchActivity(screen, data);
     }
 
     protected void launchActivity(Screen screen, Intent intent) {
@@ -32,21 +28,21 @@ public class ActivityRouterCallback implements RouterCallback {
     }
 
     @Override
-    public final void cancel(Bundle bundle) {
-        RouterCallback.super.cancel(bundle);
-        mActivity.setResult(Activity.RESULT_CANCELED, intentFromBundle(bundle));
+    public final void cancel(Intent data) {
+        RouterCallback.super.cancel(data);
+        mActivity.setResult(Activity.RESULT_CANCELED, data);
         mActivity.finish();
     }
 
     @Override
-    public final void success(Bundle bundle) {
-        RouterCallback.super.success(bundle);
-        mActivity.setResult(Activity.RESULT_OK, intentFromBundle(bundle));
+    public final void success(Intent data) {
+        RouterCallback.super.success(data);
+        mActivity.setResult(Activity.RESULT_OK, data);
         mActivity.finish();
     }
 
     @Override
-    public Bundle startData() {
-        return fromIntent(mActivity.getIntent());
+    public Intent startIntent() {
+        return mActivity.getIntent();
     }
 }

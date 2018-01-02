@@ -3,11 +3,10 @@ package com.tarasantoshchuk.arch.core.routing.callback_impl;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 
-import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 
-import static com.tarasantoshchuk.arch.core.routing.BundleConverter.fromAndroidBundle;
 import static com.tarasantoshchuk.arch.core.routing.ScreensResolver.requestCode;
 
 public class FragmentRouterCallback extends ActivityRouterCallback {
@@ -24,7 +23,12 @@ public class FragmentRouterCallback extends ActivityRouterCallback {
     }
 
     @Override
+    public Intent startIntent() {
+        return null;
+    }
+
+    @Override
     public Bundle startData() {
-        return fromAndroidBundle(mFragment.getArguments());
+        return mFragment.getArguments();
     }
 }

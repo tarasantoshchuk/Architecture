@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegateHolder;
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
-import com.tarasantoshchuk.arch.core.routing.BundleConverter;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
@@ -84,7 +83,7 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements RootV
                 .notifyScreenResult(
                         Activity.RESULT_OK == resultCode,
                         ScreensResolver.screen(requestCode),
-                        BundleConverter.fromIntent(data)
+                        data
                 );
     }
 }

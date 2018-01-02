@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.tarasantoshchuk.arch.core.core.ArchitectureDelegates;
 import com.tarasantoshchuk.arch.core.core.ViewCallbacks;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
-import com.tarasantoshchuk.arch.core.routing.BundleConverter;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.Routers;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
@@ -66,7 +65,7 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment impleme
                 .notifyScreenResult(
                         resultCode == Activity.RESULT_OK,
                         ScreensResolver.screen(requestCode),
-                        BundleConverter.fromIntent(data)
+                        data
                 );
     }
 

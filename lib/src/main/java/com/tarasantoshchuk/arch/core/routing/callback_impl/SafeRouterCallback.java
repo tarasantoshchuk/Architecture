@@ -1,6 +1,8 @@
 package com.tarasantoshchuk.arch.core.routing.callback_impl;
 
-import com.tarasantoshchuk.arch.core.routing.Bundle;
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
 import com.tarasantoshchuk.arch.core.view.View;
@@ -18,11 +20,14 @@ public class SafeRouterCallback<V extends View> implements RouterCallback {
      */
     private Bundle mStartData;
 
+    private Intent mStartIntent;
+
     public SafeRouterCallback(RouterCallback inner, Provider<CachedActions<V>> provider) {
         mInner = inner;
         mViewActionsProvider = provider;
 
         mStartData = inner.startData();
+        mStartIntent = inner.startIntent();
     }
 
     @Override
@@ -46,6 +51,11 @@ public class SafeRouterCallback<V extends View> implements RouterCallback {
     @Override
     public Bundle startData() {
         return mStartData;
+    }
+
+    @Override
+    public Intent startIntent() {
+        return mStartIntent;
     }
 
     private void submit(Action<V> action) {

@@ -1,11 +1,11 @@
 package com.tarasantoshchuk.arch.core.routing.router_impl;
 
 
+import android.content.Intent;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import com.tarasantoshchuk.arch.core.core.RouterCallbacks;
-import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
@@ -23,7 +23,7 @@ public class BaseRouter<P, S extends Screen> implements Router<P, S> {
 
     @CallSuper
     @Override
-    public void onScreenResult(boolean isOk, @NonNull S screen, @NonNull Bundle data) {
+    public void onScreenResult(boolean isOk, @NonNull S screen, @NonNull Intent data) {
         Logger.v(this, "onScreenResult, isOk " + isOk + ", screen " + screen + ", data " + data);
     }
 

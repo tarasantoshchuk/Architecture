@@ -1,10 +1,11 @@
 package com.tarasantoshchuk.arch.core.core;
 
 
+import android.content.Intent;
+
 import com.tarasantoshchuk.arch.core.di.ScreenConfigurator;
 import com.tarasantoshchuk.arch.core.interactor.Interactor;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
-import com.tarasantoshchuk.arch.core.routing.Bundle;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver;
@@ -124,8 +125,8 @@ public class ArchitectureDelegate<
 
     @SuppressWarnings("unchecked")
     @Override
-    public void notifyScreenResult(boolean isOk, ScreensResolver.Screen screen, Bundle bundle) {
+    public void notifyScreenResult(boolean isOk, ScreensResolver.Screen screen, Intent data) {
         router()
-                .onScreenResult(isOk, screen, bundle);
+                .onScreenResult(isOk, screen, data);
     }
 }

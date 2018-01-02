@@ -28,14 +28,4 @@ public abstract class Routers {
     public static RouterCallback fromAndroidView(View view) {
         return new AndroidViewRouterCallback(view);
     }
-
-    public static Intent intentWithBundle(Context context, ScreensResolver.Screen screen, Bundle bundle) {
-        return new Intent(context, ScreensResolver.screenClass(screen))
-                .putExtras(BundleConverter.toAndroidBundle(bundle));
-    }
-
-    public static Intent intentFromBundle(Bundle bundle) {
-        return new Intent()
-                .putExtras(BundleConverter.toAndroidBundle(bundle));
-    }
 }
