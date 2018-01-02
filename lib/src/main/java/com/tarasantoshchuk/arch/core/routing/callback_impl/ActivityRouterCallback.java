@@ -8,6 +8,7 @@ import com.tarasantoshchuk.arch.core.routing.RouterCallback;
 import com.tarasantoshchuk.arch.core.routing.ScreensResolver.Screen;
 
 import static com.tarasantoshchuk.arch.core.routing.ScreensResolver.requestCode;
+import static com.tarasantoshchuk.arch.core.routing.ScreensResolver.screenClass;
 
 public class ActivityRouterCallback implements RouterCallback {
     private Activity mActivity;
@@ -19,7 +20,7 @@ public class ActivityRouterCallback implements RouterCallback {
     @Override
     public final void startScreen(Screen screen, Intent data) {
         RouterCallback.super.startScreen(screen, data);
-        data.setClass(mActivity, screen.getClass());
+        data.setClass(mActivity, screenClass(screen));
         launchActivity(screen, data);
     }
 

@@ -12,7 +12,6 @@ public interface RouterCallback {
         Logger.v(this, "startScreen, screen " + screen + ", data " + data);
     }
 
-    @CallSuper
     default void startScreen(ScreensResolver.Screen screen, Bundle bundle) {
         startScreen(screen, new Intent().putExtras(bundle));
     }

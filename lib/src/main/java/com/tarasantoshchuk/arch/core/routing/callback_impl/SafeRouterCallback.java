@@ -31,21 +31,21 @@ public class SafeRouterCallback<V extends View> implements RouterCallback {
     }
 
     @Override
-    public void startScreen(ScreensResolver.Screen screen, Bundle extras) {
-        RouterCallback.super.startScreen(screen, extras);
-        submit(view -> mInner.startScreen(screen, extras));
+    public void startScreen(ScreensResolver.Screen screen, Intent data) {
+        RouterCallback.super.startScreen(screen, data);
+        submit(view -> mInner.startScreen(screen, data));
     }
 
     @Override
-    public void cancel(Bundle extras) {
-        RouterCallback.super.cancel(extras);
-        submit(view -> mInner.cancel(extras));
+    public void cancel(Intent data) {
+        RouterCallback.super.cancel(data);
+        submit(view -> mInner.cancel(data));
     }
 
     @Override
-    public void success(Bundle extras) {
-        RouterCallback.super.success(extras);
-        submit(view -> mInner.success(extras));
+    public void success(Intent data) {
+        RouterCallback.super.success(data);
+        submit(view -> mInner.success(data));
     }
 
     @Override
