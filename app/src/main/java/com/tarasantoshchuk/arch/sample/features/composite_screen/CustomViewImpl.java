@@ -15,13 +15,13 @@ import com.tarasantoshchuk.arch.core.routing.router_impl.EmptyRouter;
 import com.tarasantoshchuk.arch.core.view.impl.BaseView;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.CustomView;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.CustomView.CustomViewPresenter;
-import com.tarasantoshchuk.arch.util.Null;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 public class CustomViewImpl extends BaseView<CustomViewPresenter> implements CustomView {
-    private PublishSubject<Null> mClick = PublishSubject.create();
+    private PublishSubject<Irrelevant> mClick = PublishSubject.create();
     private Paint mPaint = new Paint();
 
     public CustomViewImpl(Context context) {
@@ -81,12 +81,12 @@ public class CustomViewImpl extends BaseView<CustomViewPresenter> implements Cus
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mClick.onNext(Null.INSTANCE);
+        mClick.onNext(Irrelevant.INSTANCE);
         return super.onTouchEvent(event);
     }
 
     @Override
-    public Observable<Null> touched() {
+    public Observable<Irrelevant> touched() {
         return mClick;
     }
 }

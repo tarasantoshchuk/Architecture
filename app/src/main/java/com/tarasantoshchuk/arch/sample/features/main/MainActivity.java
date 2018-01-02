@@ -12,8 +12,8 @@ import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView;
 import com.tarasantoshchuk.arch.sample.features.main.Contract.MainView.MainPresenter;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 import com.tarasantoshchuk.arch.util.log.Logger;
-import com.tarasantoshchuk.arch.util.Null;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +31,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
     @BindView(R.id.btn_screen_with_subview)
     View mSubviewScreen;
 
-    PublishSubject<Null> mEditClicks = PublishSubject.create();
-    PublishSubject<Null> mOpenOtherClicks = PublishSubject.create();
+    PublishSubject<Irrelevant> mEditClicks = PublishSubject.create();
+    PublishSubject<Irrelevant> mOpenOtherClicks = PublishSubject.create();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,23 +46,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
     void onEditClick() {
         Logger.v(this, "onEditClick");
 
-        mEditClicks.onNext(Null.INSTANCE);
+        mEditClicks.onNext(Irrelevant.INSTANCE);
     }
 
     @OnClick(R.id.btn_screen_with_subview)
     void onOpenOtherClick() {
         Logger.v(this, "onOpenOtherClick");
 
-        mOpenOtherClicks.onNext(Null.INSTANCE);
+        mOpenOtherClicks.onNext(Irrelevant.INSTANCE);
     }
 
     @Override
-    public Observable<Null> editClicks() {
+    public Observable<Irrelevant> editClicks() {
         return mEditClicks;
     }
 
     @Override
-    public Observable<Null> openOtherClicks() {
+    public Observable<Irrelevant> openOtherClicks() {
         return mOpenOtherClicks;
     }
 

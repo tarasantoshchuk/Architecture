@@ -6,14 +6,14 @@ import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.routing.Router;
 import com.tarasantoshchuk.arch.core.view.RootView;
 import com.tarasantoshchuk.arch.sample.core.routing.Screens;
-import com.tarasantoshchuk.arch.util.Null;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 
 import io.reactivex.Observable;
 
 interface Contract {
     interface MainView extends RootView<MainView.MainPresenter> {
-        Observable<Null> editClicks();
-        Observable<Null> openOtherClicks();
+        Observable<Irrelevant> editClicks();
+        Observable<Irrelevant> openOtherClicks();
 
 
 

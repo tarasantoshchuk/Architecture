@@ -4,7 +4,7 @@ package com.tarasantoshchuk.arch.sample.features.composite_screen;
 import com.tarasantoshchuk.arch.core.presenter.Presenter;
 import com.tarasantoshchuk.arch.core.view.View;
 import com.tarasantoshchuk.arch.sample.core.routing.Screens;
-import com.tarasantoshchuk.arch.util.Null;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -17,7 +17,7 @@ public interface Contract {
         interface HostViewPresenter extends Presenter<HostView, Router, Interactor> {
             Observable<String> textChanged();
 
-            Observable<Null> click();
+            Observable<Irrelevant> click();
         }
     }
 
@@ -30,7 +30,7 @@ public interface Contract {
     }
 
     interface CustomView {
-        Observable<Null> touched();
+        Observable<Irrelevant> touched();
 
         interface CustomViewPresenter extends Presenter<CustomView, Router, Interactor> {
             Observable<Boolean> switchChanged();
@@ -42,7 +42,7 @@ public interface Contract {
 
         PublishSubject<String> currentText();
 
-        PublishSubject<Null> click();
+        PublishSubject<Irrelevant> click();
     }
 
     interface Router extends com.tarasantoshchuk.arch.core.routing.Router<HostView.HostViewPresenter, Screens> {

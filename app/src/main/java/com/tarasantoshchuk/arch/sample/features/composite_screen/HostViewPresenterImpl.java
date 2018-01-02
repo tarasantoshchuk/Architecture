@@ -6,8 +6,8 @@ import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.HostVi
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.HostView.HostViewPresenter;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.Interactor;
 import com.tarasantoshchuk.arch.sample.features.composite_screen.Contract.Router;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
-import com.tarasantoshchuk.arch.util.Null;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -15,7 +15,7 @@ import io.reactivex.subjects.BehaviorSubject;
 class HostViewPresenterImpl extends BasePresenter<HostView, Router, Interactor> implements HostViewPresenter {
     private BehaviorSubject<Boolean> mSwitch = BehaviorSubject.createDefault(false);
     private BehaviorSubject<String> mText = BehaviorSubject.createDefault("");
-    private BehaviorSubject<Null> mClick = BehaviorSubject.createDefault(Null.INSTANCE);
+    private BehaviorSubject<Irrelevant> mClick = BehaviorSubject.createDefault(Irrelevant.INSTANCE);
 
     @Override
     protected void onCreate() {
@@ -30,9 +30,9 @@ class HostViewPresenterImpl extends BasePresenter<HostView, Router, Interactor> 
             }
         });
 
-        interactor().click().subscribe(new SimpleObserver<Null>() {
+        interactor().click().subscribe(new SimpleObserver<Irrelevant>() {
             @Override
-            public void onNext(Null n) {
+            public void onNext(Irrelevant n) {
                 super.onNext(n);
                 mClick.onNext(n);
             }
@@ -52,7 +52,7 @@ class HostViewPresenterImpl extends BasePresenter<HostView, Router, Interactor> 
     }
 
     @Override
-    public Observable<Null> click() {
+    public Observable<Irrelevant> click() {
         return mClick;
     }
 

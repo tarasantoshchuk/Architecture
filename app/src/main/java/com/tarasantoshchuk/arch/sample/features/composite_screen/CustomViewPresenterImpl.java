@@ -2,16 +2,15 @@ package com.tarasantoshchuk.arch.sample.features.composite_screen;
 
 
 import com.tarasantoshchuk.arch.core.presenter.impl.BasePresenter;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 import com.tarasantoshchuk.arch.sample.utils.SimpleObserver;
-import com.tarasantoshchuk.arch.util.Null;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class CustomViewPresenterImpl extends BasePresenter<Contract.CustomView, Contract.Router, Contract.Interactor> implements Contract.CustomView.CustomViewPresenter {
     private BehaviorSubject<Boolean> mSwitched = BehaviorSubject.createDefault(false);
-    private BehaviorSubject<Null> mClick = BehaviorSubject.createDefault(Null.INSTANCE);
+    private BehaviorSubject<Irrelevant> mClick = BehaviorSubject.createDefault(Irrelevant.INSTANCE);
 
     @Override
     protected void onCreate() {
@@ -40,7 +39,7 @@ public class CustomViewPresenterImpl extends BasePresenter<Contract.CustomView, 
                 .subscribe(this::clicked);
     }
 
-    private void clicked(Null n) {
+    private void clicked(Irrelevant n) {
         mClick.onNext(n);
     }
 }

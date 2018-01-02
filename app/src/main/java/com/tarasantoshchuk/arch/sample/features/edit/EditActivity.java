@@ -11,7 +11,7 @@ import com.tarasantoshchuk.arch.core.view.impl.BaseActivity;
 import com.tarasantoshchuk.arch.sample.R;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView;
 import com.tarasantoshchuk.arch.sample.features.edit.Contract.EditView.EditPresenter;
-import com.tarasantoshchuk.arch.util.Null;
+import com.tarasantoshchuk.arch.sample.utils.Irrelevant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 public class EditActivity extends BaseActivity<EditPresenter> implements EditView {
-    private PublishSubject<Null> mSaveClicks = PublishSubject.create();
+    private PublishSubject<Irrelevant> mSaveClicks = PublishSubject.create();
     private PublishSubject<String> mTextChanges = PublishSubject.create();
 
     @BindView(R.id.edit_text)
@@ -54,7 +54,7 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
     }
 
     @Override
-    public Observable<Null> saveClicks() {
+    public Observable<Irrelevant> saveClicks() {
         return mSaveClicks;
     }
 
@@ -65,7 +65,7 @@ public class EditActivity extends BaseActivity<EditPresenter> implements EditVie
 
     @OnClick(R.id.save_button)
     public void onSaveClick() {
-        mSaveClicks.onNext(Null.INSTANCE);
+        mSaveClicks.onNext(Irrelevant.INSTANCE);
     }
 
     @OnTextChanged(R.id.edit_text)
