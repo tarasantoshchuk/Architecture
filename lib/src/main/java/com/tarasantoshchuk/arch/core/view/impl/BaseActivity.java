@@ -79,11 +79,16 @@ public abstract class BaseActivity<P> extends AppCompatActivity implements RootV
     protected final void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        mViewCallbacks
-                .notifyScreenResult(
-                        Activity.RESULT_OK == resultCode,
-                        ScreensResolver.screen(requestCode),
-                        data
-                );
+        int requestIndex = requestCode >> 16;
+
+        //check if started from fragment
+        if (requestIndex == 0) {
+            mViewCallbacks
+                    .notifyScreenResult(
+                            Activity.RESULT_OK == resultCode,
+                            ScreensResolver.screen(requestCode),
+                            data
+                    );
+        }
     }
 }
