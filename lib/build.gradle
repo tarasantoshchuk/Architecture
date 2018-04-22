@@ -4,17 +4,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.tarasantoshchuk'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "26.0.2"
 
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion 14
+        targetSdkVersion 27
     }
 
     buildTypes {
@@ -34,10 +30,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
 
-    compile "android.arch.lifecycle:extensions:1.0.0"
+    implementation "android.arch.lifecycle:extensions:1.1.0"
 
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.11'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 }
